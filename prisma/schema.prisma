@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  name         String?
+  avatarUrl    String?   @map("avatar_url")
+  images       Image[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model Image {
+  id             String   @id @default(cuid())
+  userId         String   @map("user_id")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  prompt         String
+  negativePrompt String?  @map("negative_prompt")
+  type           String   @default("text-to-image")
+
+  sourceUrl      String?  @map("source_url")
+  maskUrl        String?  @map("mask_url")
+  resultUrls     String[] @map("result_urls")
+
+  width          Int      @default(1024)
+  height         Int      @default(1024)
+  steps          Int      @default(30)
+  cfgScale       Float    @default(7.5) @map("cfg_scale")
+  seed           Int?
+
+  status         String   @default("completed")
+  favorite       Boolean  @default(false)
+  shareSlug      String?  @unique @map("share_slug")
+
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("images")
+}
