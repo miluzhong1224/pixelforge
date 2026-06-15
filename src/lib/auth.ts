@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
-import { db } from './db';
+import { supabase } from './supabase';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -24,15 +24,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        const user = await db.user.findUnique({
-          where: { email },
-        });
+        const { data: user, error } = await supabase
+          .from('users')
+          .select('id, email, password_hash, name, avatar_url')
+          .eq('email', email)
+          .maybeSingle();
 
-        if (!user) {
+        if (error || !user) {
           return null;
         }
 
-        const isValid = await compare(password, user.passwordHash);
+        const isValid = await compare(password, user.password_hash);
         if (!isValid) {
           return null;
         }
@@ -41,7 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.name,
-          image: user.avatarUrl,
+          image: user.avatar_url,
         };
       },
     }),
