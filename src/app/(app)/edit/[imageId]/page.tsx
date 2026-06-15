@@ -40,9 +40,9 @@ interface ImageData {
   id: string;
   prompt: string;
   type: string;
-  sourceUrl: string | null;
-  maskUrl: string | null;
-  resultUrls: string[];
+  source_url: string | null;
+  mask_url: string | null;
+  result_urls: string[];
   width: number;
   height: number;
 }
@@ -61,13 +61,19 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
+    const SUPABASE_URL = 'https://pnowmoquisuqomhfsvza.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_FBMRbDCZw-kZuhuHjDwtQQ_ajLWMtf6';
     async function loadImage() {
       try {
-        const res = await fetch(`/api/images/${imageId}`);
-        const data = await res.json();
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/images?id=eq.${imageId}&limit=1`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` },
+        });
         if (res.ok) {
-          setImage(data.image);
-          setEditPrompt(data.image.prompt);
+          const data = await res.json();
+          if (data[0]) {
+            setImage(data[0]);
+            setEditPrompt(data[0].prompt || '');
+          }
         }
       } catch (error) {
         console.error('Load image error:', error);
@@ -79,8 +85,8 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
     loadImage();
   }, [imageId]);
 
-  const sourceImageUrl = image?.sourceUrl || image?.resultUrls?.[0];
-  const displayUrl = editResult || (image?.resultUrls?.[0]);
+  const sourceImageUrl = image?.source_url || image?.result_urls?.[0];
+  const displayUrl = editResult || (image?.result_urls?.[0]);
 
   const handleInpaint = useCallback(async () => {
     if (!sourceImageUrl || !maskDataUrl || !editPrompt.trim()) {
@@ -108,7 +114,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Inpainting failed');
 
-      setEditResult(data.image.resultUrls[0]);
+      setEditResult(data.image.resultUrls?.[0] ?? data.image.result_urls?.[0]);
       toast.success('修改完成！');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : '局部重绘失败');
@@ -172,7 +178,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
       });
       const data = await res.json();
       if (res.ok) {
-        setEditResult(data.image.resultUrls[0]);
+        setEditResult(data.image.resultUrls?.[0] ?? data.image.result_urls?.[0]);
         toast.success('背景已移除！');
       } else {
         toast.error(data.error || '处理失败');
@@ -196,7 +202,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
       });
       const data = await res.json();
       if (res.ok) {
-        setEditResult(data.image.resultUrls[0]);
+        setEditResult(data.image.resultUrls?.[0] ?? data.image.result_urls?.[0]);
         toast.success('已放大 2x！');
       } else {
         toast.error(data.error || '放大失败');

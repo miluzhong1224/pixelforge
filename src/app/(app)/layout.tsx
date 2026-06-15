@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { auth, signOut } from '@/lib/auth';
+import { auth } from '@/lib/auth';
+import { SignOutButton } from '@/components/layout/signout-button';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -34,18 +35,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             <span className="text-sm text-zinc-500 hidden sm:block">
               {session?.user?.email}
             </span>
-            <form
-              action={async () => {
-                'use server';
-                await signOut({ redirectTo: '/' });
-              }}
-            >
-              <button
-                type="submit"
-                className="px-3 py-1.5 rounded-lg text-sm text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-colors"
-              >
-                退出登录              </button>
-            </form>
+            <SignOutButton />
           </div>
         </div>
       </header>

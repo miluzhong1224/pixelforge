@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
-import { supabase } from './supabase';
+import { findUserByEmail } from './supabase';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -17,48 +17,51 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('[AUTH] authorize called, email:', credentials?.email);
         if (!credentials?.email || !credentials?.password) {
+          console.log('[AUTH] FAIL: missing credentials');
           return null;
         }
 
-        const email = credentials.email as string;
-        const password = credentials.password as string;
+        try {
+          console.log('[AUTH] looking up user...');
+          const user = await findUserByEmail(credentials.email as string);
+          if (!user) {
+            console.log('[AUTH] FAIL: user not found');
+            return null;
+          }
+          console.log('[AUTH] user found, comparing password...');
 
-        const { data: user, error } = await supabase
-          .from('users')
-          .select('id, email, password_hash, name, avatar_url')
-          .eq('email', email)
-          .maybeSingle();
+          const isValid = await compare(
+            credentials.password as string,
+            user.password_hash
+          );
+          if (!isValid) {
+            console.log('[AUTH] FAIL: password mismatch');
+            return null;
+          }
 
-        if (error || !user) {
+          console.log('[AUTH] SUCCESS, returning user');
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.avatar_url,
+          };
+        } catch (err) {
+          console.log('[AUTH] FAIL: exception -', err instanceof Error ? err.message : String(err));
           return null;
         }
-
-        const isValid = await compare(password, user.password_hash);
-        if (!isValid) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.avatar_url,
-        };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
+      if (user) token.id = user.id;
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-      }
+      if (session.user) session.user.id = token.id as string;
       return session;
     },
   },

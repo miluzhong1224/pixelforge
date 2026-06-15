@@ -1,54 +1,23 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { createImage } from '@/lib/supabase';
 import { qwenImageToImage } from '@/lib/siliconflow';
 
 export async function POST(request: Request) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: '请先登录' }, { status: 401 });
-    }
+    if (!session?.user?.id) return NextResponse.json({ error: '请先登录' }, { status: 401 });
 
-    const body = await request.json();
-    const { prompt, negativePrompt, imageUrl, width = 1024, height = 1024 } = body;
+    const { prompt, imageUrl } = await request.json();
+    if (!prompt || !imageUrl) return NextResponse.json({ error: '提示词和参考图片为必填项' }, { status: 400 });
 
-    if (!prompt || !imageUrl) {
-      return NextResponse.json({ error: '提示词和参考图片为必填项' }, { status: 400 });
-    }
+    const resultUrls = await qwenImageToImage({ prompt: prompt.trim(), imageUrl, numOutputs: 1 });
 
-    const resultUrls = await qwenImageToImage({
-      prompt: prompt.trim(),
-      negativePrompt: negativePrompt?.trim() || undefined,
-      imageUrl,
-      width,
-      height,
-      numOutputs: 1,
-    });
+    const image = await createImage({ user_id: session.user.id, prompt: prompt.trim(), type: 'image-to-image', source_url: imageUrl, result_urls: resultUrls as string[] });
 
-    const image = await db.image.create({
-      data: {
-        userId: session.user.id,
-        prompt: prompt.trim(),
-        negativePrompt: negativePrompt?.trim() || null,
-        type: 'image-to-image',
-        sourceUrl: imageUrl,
-        resultUrls: resultUrls as string[],
-        width,
-        height,
-      },
-    });
-
-    return NextResponse.json({
-      success: true,
-      image: {
-        id: image.id,
-        resultUrls: image.resultUrls,
-      },
-    });
+    return NextResponse.json({ success: true, image: { id: image.id, resultUrls: image.result_urls } });
   } catch (error) {
     console.error('Image-to-image error:', error);
-    const message = error instanceof Error ? error.message : 'Generation failed';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : '生成失败' }, { status: 500 });
   }
 }
