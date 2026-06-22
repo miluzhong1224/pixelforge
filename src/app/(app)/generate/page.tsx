@@ -10,6 +10,7 @@ import { GenerateProgress } from '@/components/generate/generate-progress';
 import { TemplateSelector } from '@/components/template/template-selector';
 import type { PromptTemplate } from '@/data/templates';
 import { toast } from 'sonner';
+import { Onboarding } from '@/components/guide/onboarding';
 import { Wand2, Download, Pen, Upload, Languages, BookOpen } from 'lucide-react';
 
 type GenerationMode = 'text-to-image' | 'image-to-image';
@@ -181,6 +182,7 @@ export default function GeneratePage() {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-6 py-6">
+      <Onboarding />
       <TemplateSelector open={templateOpen} onClose={() => setTemplateOpen(false)} onSelect={handleSelectTemplate} />
 
       <div className="flex gap-6 h-[calc(100vh-8rem)]">
@@ -238,12 +240,6 @@ export default function GeneratePage() {
                   <Languages size={12} />
                   {translating ? '优化中...' : 'AI 优化翻译'}
                 </button>
-                <button
-                  onClick={() => setTemplateOpen(true)}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-zinc-400 hover:text-zinc-300 hover:bg-zinc-700/50 transition-colors"
-                >
-                  <BookOpen size={12} />模板
-                </button>
               </div>
             </div>
             <textarea
@@ -253,6 +249,15 @@ export default function GeneratePage() {
               rows={3}
               className="w-full resize-none rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:border-violet-500 transition-colors"
             />
+
+            {/* 模板按钮 — 独立一行，更醒目 */}
+            <button
+              onClick={() => setTemplateOpen(true)}
+              className="flex items-center justify-center gap-2 w-full py-2 rounded-lg border border-dashed border-zinc-600 bg-zinc-800/30 text-sm text-zinc-400 hover:border-violet-500/50 hover:text-violet-300 hover:bg-violet-500/5 transition-all"
+            >
+              <BookOpen size={15} />
+              浏览 Prompt 模板库（12 套风格预设）
+            </button>
           </div>
 
           {/* Negative Prompt */}

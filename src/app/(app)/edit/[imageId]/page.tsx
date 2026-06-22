@@ -59,6 +59,9 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
   const [editResult, setEditResult] = useState<string | null>(null);
   const [translating, setTranslating] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [processingLabel, setProcessingLabel] = useState('');
+  const [processingStart, setProcessingStart] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
     const SUPABASE_URL = 'https://pnowmoquisuqomhfsvza.supabase.co';
@@ -166,9 +169,16 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
     });
   }, []);
 
+  // 进度计时
+  useEffect(() => {
+    if (!processing) { setElapsed(0); return; }
+    const t = setInterval(() => setElapsed(Math.floor((Date.now() - processingStart) / 1000)), 200);
+    return () => clearInterval(t);
+  }, [processing, processingStart]);
+
   const handleRemoveBg = useCallback(async () => {
     if (!sourceImageUrl) return;
-    setProcessing(true);
+    setProcessing(true); setProcessingLabel('正在去除背景...'); setProcessingStart(Date.now());
     try {
       const compressed = await compressForApi(sourceImageUrl);
       const res = await fetch('/api/image/remove-bg', {
@@ -192,7 +202,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
 
   const handleUpscale = useCallback(async () => {
     if (!sourceImageUrl) return;
-    setProcessing(true);
+    setProcessing(true); setProcessingLabel('正在放大增强...'); setProcessingStart(Date.now());
     try {
       const compressed = await compressForApi(sourceImageUrl);
       const res = await fetch('/api/image/upscale', {
@@ -248,13 +258,20 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
           <div>
             <h1 className="text-xl font-bold text-zinc-100">局部重绘编辑器</h1>
             <p className="text-sm text-zinc-500">涂抹需要修改的区域，输入修改描述</p>
+            {processing && (
+              <div className="flex items-center gap-2 mt-1.5">
+                <div className="w-3 h-3 rounded-full border-2 border-zinc-600 border-t-violet-500 animate-spin" />
+                <span className="text-xs text-violet-400">{processingLabel}</span>
+                <span className="text-[10px] text-zinc-600">{elapsed}s</span>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleRemoveBg} disabled={processing}>
+          <Button variant="outline" size="sm" onClick={handleRemoveBg} disabled={processing} loading={processing && processingLabel.includes('背景')}>
             <Eraser size={14} className="mr-1.5" /> 去背景
           </Button>
-          <Button variant="outline" size="sm" onClick={handleUpscale} disabled={processing}>
+          <Button variant="outline" size="sm" onClick={handleUpscale} disabled={processing} loading={processing && processingLabel.includes('放大')}>
             <ZoomIn size={14} className="mr-1.5" /> 2x 放大
           </Button>
           {editResult && (
