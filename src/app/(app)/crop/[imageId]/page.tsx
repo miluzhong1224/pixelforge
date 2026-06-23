@@ -7,7 +7,10 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ArrowLeft, Download } from 'lucide-react';
 
-interface ImageData { id: string; prompt: string; resultUrls: string[]; }
+interface ImageData { id: string; prompt: string; result_urls: string[]; }
+
+const SUPABASE_URL = 'https://pnowmoquisuqomhfsvza.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_FBMRbDCZw-kZuhuHjDwtQQ_ajLWMtf6';
 
 export default function CropPage({ params }: { params: Promise<{ imageId: string }> }) {
   const { imageId } = use(params);
@@ -17,8 +20,10 @@ export default function CropPage({ params }: { params: Promise<{ imageId: string
   const [cropped, setCropped] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`/api/images/${imageId}`).then(r => r.json()).then(d => {
-      if (d.image) setImage(d.image);
+    fetch(`${SUPABASE_URL}/rest/v1/images?id=eq.${imageId}&limit=1`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` },
+    }).then(r => r.json()).then(d => {
+      if (d[0]) setImage(d[0]);
       setLoading(false);
     });
   }, [imageId]);
@@ -46,7 +51,7 @@ export default function CropPage({ params }: { params: Promise<{ imageId: string
       </div>
 
       <div className="flex gap-6">
-        <div className="flex-1"><CropCanvas imageUrl={image.resultUrls[0]} onCrop={setCropped} /></div>
+        <div className="flex-1"><CropCanvas imageUrl={image.result_urls?.[0]} onCrop={setCropped} /></div>
         {cropped && (
           <div className="w-80 shrink-0">
             <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2 block">预览</label>

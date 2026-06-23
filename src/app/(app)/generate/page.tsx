@@ -11,7 +11,9 @@ import { TemplateSelector } from '@/components/template/template-selector';
 import type { PromptTemplate } from '@/data/templates';
 import { toast } from 'sonner';
 import { Onboarding } from '@/components/guide/onboarding';
-import { Wand2, Download, Pen, Upload, Languages, BookOpen } from 'lucide-react';
+import { PromptHistory, addPromptToHistory } from '@/components/generate/prompt-history';
+import { FormatDownload } from '@/components/generate/format-download';
+import { Wand2, Pen, Upload, Languages, BookOpen, Clock } from 'lucide-react';
 
 type GenerationMode = 'text-to-image' | 'image-to-image';
 
@@ -53,7 +55,9 @@ export default function GeneratePage() {
   const [lastImageId, setLastImageId] = useState<string | null>(null);
   const [templateOpen, setTemplateOpen] = useState(false);
   const [translating, setTranslating] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const promptContainerRef = useRef<HTMLDivElement>(null);
 
   const dim = DIMENSIONS[dimensionIndex];
 
@@ -106,6 +110,7 @@ export default function GeneratePage() {
       setResultUrls(data.image.resultUrls);
       setSelectedIndex(0);
       setLastImageId(data.image.id);
+      addPromptToHistory(currentPrompt);
       toast.success('生成完成！');
     } catch (error) {
       const msg = error instanceof Error
@@ -240,6 +245,12 @@ export default function GeneratePage() {
                   <Languages size={12} />
                   {translating ? '优化中...' : 'AI 优化翻译'}
                 </button>
+                <button
+                  onClick={() => setHistoryOpen(!historyOpen)}
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-zinc-400 hover:text-zinc-300 hover:bg-zinc-700/50 transition-colors"
+                >
+                  <Clock size={12} />历史
+                </button>
               </div>
             </div>
             <textarea
@@ -258,6 +269,11 @@ export default function GeneratePage() {
               <BookOpen size={15} />
               浏览 Prompt 模板库（12 套风格预设）
             </button>
+
+            {/* Prompt 历史下拉 */}
+            <div ref={promptContainerRef} className="relative">
+              <PromptHistory open={historyOpen} onClose={() => setHistoryOpen(false)} onSelect={(p) => { setPrompt(p); addPromptToHistory(p); }} />
+            </div>
           </div>
 
           {/* Negative Prompt */}
@@ -304,11 +320,7 @@ export default function GeneratePage() {
               <Button className="w-full" size="md" onClick={() => router.push(`/edit/${lastImageId}`)}>
                 <Pen size={16} className="mr-2" /> 二次编辑（局部重绘）
               </Button>
-              <a href={resultUrls[selectedIndex]} download target="_blank" rel="noopener noreferrer" className="block">
-                <Button variant="outline" className="w-full" size="sm">
-                  <Download size={14} className="mr-1.5" /> 下载图片
-                </Button>
-              </a>
+              <FormatDownload url={resultUrls[selectedIndex]} className="w-full" />
             </div>
           )}
         </div>

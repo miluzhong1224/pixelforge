@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 
 import { MaskCanvas } from '@/components/editor/mask-canvas';
 import { toast } from 'sonner';
-import { ArrowLeft, Wand2, Download, Languages, Eraser, ZoomIn } from 'lucide-react';
+import { ArrowLeft, Wand2, Languages, Eraser, ZoomIn } from 'lucide-react';
+import { FormatDownload } from '@/components/generate/format-download';
 
 /** 合成原图 + 红色遮罩 → 带标记的图片，方便 AI 理解要修改的区域 */
 function compositeImages(imageUrl: string, maskUrl: string): Promise<string> {
@@ -274,13 +275,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
           <Button variant="outline" size="sm" onClick={handleUpscale} disabled={processing} loading={processing && processingLabel.includes('放大')}>
             <ZoomIn size={14} className="mr-1.5" /> 2x 放大
           </Button>
-          {editResult && (
-            <a href={editResult} download target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="sm">
-                <Download size={14} className="mr-1.5" /> 下载
-              </Button>
-            </a>
-          )}
+          {editResult && <FormatDownload url={editResult} />}
         </div>
       </div>
 
