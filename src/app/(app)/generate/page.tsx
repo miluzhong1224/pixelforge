@@ -13,9 +13,9 @@ import { toast } from 'sonner';
 import { Onboarding } from '@/components/guide/onboarding';
 import { PromptHistory, addPromptToHistory } from '@/components/generate/prompt-history';
 import { FormatDownload } from '@/components/generate/format-download';
-import { Wand2, Pen, Upload, Languages, BookOpen, Clock } from 'lucide-react';
+import { Wand2, Pen, Upload, Languages, BookOpen, Clock, ImageUp, ScanEye } from 'lucide-react';
 
-type GenerationMode = 'text-to-image' | 'image-to-image';
+type GenerationMode = 'text-to-image' | 'image-to-image' | 'reverse';
 
 const DIMENSIONS = [
   { label: '正方形 1:1', width: 1024, height: 1024 },
@@ -56,6 +56,7 @@ export default function GeneratePage() {
   const [templateOpen, setTemplateOpen] = useState(false);
   const [translating, setTranslating] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [reversing, setReversing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const promptContainerRef = useRef<HTMLDivElement>(null);
 
@@ -77,9 +78,9 @@ export default function GeneratePage() {
     setResultUrls([]);
 
     try {
-      const endpoint = mode === 'text-to-image'
-        ? '/api/generate/text-to-image'
-        : '/api/generate/image-to-image';
+      const endpoint = mode === 'image-to-image'
+        ? '/api/generate/image-to-image'
+        : '/api/generate/text-to-image';
 
       const body: Record<string, unknown> = {
         prompt: currentPrompt.trim(),
@@ -152,6 +153,49 @@ export default function GeneratePage() {
     }
   }, [prompt]);
 
+  // 反推提示词
+  const handleReversePrompt = useCallback(async () => {
+    if (!sourceImage) { toast.error('请先上传图片'); return; }
+    setReversing(true);
+    try {
+      const res = await fetch('/api/prompt/reverse', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl: sourceImage }),
+      });
+      const data = await res.json();
+      if (res.ok && data.prompt) {
+        setPrompt(data.prompt);
+        toast.success('提示词已生成！点击上方「文生图」Tab 即可查看');
+      } else {
+        toast.error(data.error || '分析失败');
+      }
+    } catch { toast.error('分析失败，请重试'); }
+    finally { setReversing(false); }
+  }, [sourceImage]);
+
+  // 反向生图：图生图生成变体
+  const handleReverseGenerate = useCallback(async () => {
+    if (!sourceImage) { toast.error('请先上传图片'); return; }
+    setReversing(true);
+    try {
+      const res = await fetch('/api/generate/image-to-image', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: 'Generate a high quality variation of this image, same style and composition, professional quality, artistic', imageUrl: sourceImage, width: dim.width, height: dim.height }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setResultUrls(data.image.resultUrls || data.image.result_urls);
+        setSelectedIndex(0);
+        setLastImageId(data.image.id);
+        setMode('text-to-image');
+        toast.success('已生成变体！');
+      } else {
+        toast.error(data.error || '生成失败');
+      }
+    } catch { toast.error('生成变体失败'); }
+    finally { setReversing(false); }
+  }, [sourceImage, dim]);
+
   // 选择模板
   const handleSelectTemplate = useCallback((t: PromptTemplate) => {
     setPrompt(t.prompt);
@@ -198,6 +242,7 @@ export default function GeneratePage() {
             {([
               { key: 'text-to-image' as const, label: '文生图', icon: Wand2 },
               { key: 'image-to-image' as const, label: '图生图', icon: Upload },
+              { key: 'reverse' as const, label: '反向生图', icon: ScanEye },
             ]).map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
@@ -210,6 +255,41 @@ export default function GeneratePage() {
               </button>
             ))}
           </div>
+
+          {/* Reverse mode */}
+          {mode === 'reverse' && (
+            <div className="p-4 rounded-xl bg-violet-500/5 border border-violet-500/20 space-y-3">
+              <div className="flex items-center gap-2 text-sm text-violet-300">
+                <ScanEye size={16} />
+                <span className="font-medium">风格变体生成</span>
+              </div>
+              <p className="text-xs text-zinc-500">
+                上传一张图片，AI 生成同风格的不同变体。适合探索更多设计方案
+              </p>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full aspect-video rounded-lg border-2 border-dashed border-zinc-700 bg-zinc-800/30 hover:border-violet-500/50 hover:bg-zinc-800/50 transition-colors flex items-center justify-center overflow-hidden"
+              >
+                {sourceImage ? (
+                  <img src={sourceImage} alt="Source" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="text-center">
+                    <ImageUp size={28} className="mx-auto text-zinc-600 mb-1" />
+                    <span className="text-xs text-zinc-500">上传要分析的图片</span>
+                  </div>
+                )}
+              </button>
+              <div className="flex gap-2">
+                <Button onClick={handleReversePrompt} className="flex-1" size="sm" variant="outline" loading={reversing} disabled={!sourceImage}>
+                  <ScanEye size={14} className="mr-1.5" />
+                  反推提示词
+                </Button>
+                <Button onClick={handleReverseGenerate} className="flex-1" size="sm" loading={reversing} disabled={!sourceImage}>
+                  生成变体
+                </Button>
+              </div>
+            </div>
+          )}
 
           {/* Source image upload */}
           {mode === 'image-to-image' && (
@@ -228,9 +308,11 @@ export default function GeneratePage() {
                   </div>
                 )}
               </button>
-              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
             </div>
           )}
+
+          {/* 隐藏的文件选择器（图生图和反向生图共用） */}
+          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
 
           {/* Prompt + 操作按钮 */}
           <div className="space-y-1.5">
