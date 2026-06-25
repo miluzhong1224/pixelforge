@@ -58,9 +58,10 @@ export default function DashboardPage() {
 
   async function handlePublish(id: string) {
     try {
-      const res = await fetch('/api/images/share', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageId: id }) });
+      const slug = Math.random().toString(36).slice(2, 14);
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/images?id=eq.${id}`, { method: 'PATCH', headers: SB_HEADERS, body: JSON.stringify({ share_slug: slug }) });
       if (res.ok) toast.success('已公开到社区广场！');
-      else toast.error('发布失败');
+      else { const err = await res.text(); toast.error('发布失败: ' + err.slice(0, 100)); }
     } catch { toast.error('发布失败'); }
   }
 
