@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect, useCallback, use } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
 import { MaskCanvas } from '@/components/editor/mask-canvas';
 import { toast } from 'sonner';
-import { ArrowLeft, Wand2, Languages, Eraser, ZoomIn } from 'lucide-react';
+import { ArrowLeft, Wand2, Languages, Eraser, ZoomIn, Palette, Expand } from 'lucide-react';
 import { FormatDownload } from '@/components/generate/format-download';
+import { ColorPanel } from '@/components/editor/color-panel';
 
 /** 合成原图 + 红色遮罩 → 带标记的图片，方便 AI 理解要修改的区域 */
 function compositeImages(imageUrl: string, maskUrl: string): Promise<string> {
@@ -63,6 +65,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
   const [processingLabel, setProcessingLabel] = useState('');
   const [processingStart, setProcessingStart] = useState(0);
   const [elapsed, setElapsed] = useState(0);
+  const [toolMode, setToolMode] = useState<'inpaint' | 'color'>('inpaint');
 
   useEffect(() => {
     const SUPABASE_URL = 'https://pnowmoquisuqomhfsvza.supabase.co';
@@ -275,6 +278,9 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
           <Button variant="outline" size="sm" onClick={handleUpscale} disabled={processing} loading={processing && processingLabel.includes('放大')}>
             <ZoomIn size={14} className="mr-1.5" /> 2x 放大
           </Button>
+          <Link href={`/expand/${imageId}`} className="inline-flex items-center h-9 px-3 rounded-lg border border-zinc-700 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition-colors">
+            <Expand size={14} className="mr-1.5" />扩图
+          </Link>
           {editResult && <FormatDownload url={editResult} />}
         </div>
       </div>
@@ -293,6 +299,14 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
 
         {/* Right: Controls */}
         <div className="w-80 shrink-0 flex flex-col gap-4">
+          {/* Mode tabs */}
+          <div className="flex rounded-lg bg-zinc-800/50 p-1">
+            <button onClick={() => setToolMode('inpaint')} className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${toolMode === 'inpaint' ? 'bg-zinc-700 text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'}`}>🖌️ 局部重绘</button>
+            <button onClick={() => setToolMode('color')} className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${toolMode === 'color' ? 'bg-zinc-700 text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'}`}>🎨 调色</button>
+          </div>
+
+          {toolMode === 'inpaint' ? (
+            <>
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">修改提示词</label>
@@ -345,6 +359,10 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
               <li>• 遮罩区域越小，生成效果越精准</li>
             </ul>
           </div>
+            </>
+          ) : (
+            <ColorPanel imageUrl={displayUrl!} />
+          )}
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protected routes
-  const protectedPaths = ['/generate', '/edit', '/dashboard', '/settings', '/crop'];
+  const protectedPaths = ['/generate', '/edit', '/dashboard', '/settings', '/crop', '/explore', '/expand'];
   const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
   const isApiRoute = pathname.startsWith('/api/generate') || pathname.startsWith('/api/images') || pathname.startsWith('/api/image');
 
@@ -22,5 +22,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/generate', '/edit/:path*', '/dashboard', '/settings', '/crop/:path*', '/api/generate/:path*', '/api/images/:path*', '/api/image/:path*'],
+  matcher: ['/generate', '/edit/:path*', '/dashboard', '/settings', '/crop/:path*', '/explore', '/expand/:path*', '/api/generate/:path*', '/api/images/:path*', '/api/image/:path*', '/api/explore'],
 };

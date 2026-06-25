@@ -402,7 +402,7 @@ export default function GeneratePage() {
               <Button className="w-full" size="md" onClick={() => router.push(`/edit/${lastImageId}`)}>
                 <Pen size={16} className="mr-2" /> 二次编辑（局部重绘）
               </Button>
-              <FormatDownload url={resultUrls[selectedIndex]} className="w-full" />
+              <p className="text-[10px] text-zinc-600 text-center">收藏 / 下载 / 公开社区请在「我的作品」中操作</p>
             </div>
           )}
         </div>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { formatDate, truncate } from '@/lib/utils';
 import { toast } from 'sonner';
-import { Download, Trash2, Pen, Plus, Copy, Star, Crop } from 'lucide-react';
+import { Download, Trash2, Pen, Plus, Copy, Star, Crop, Globe, Expand } from 'lucide-react';
 
 const SUPABASE_URL = 'https://pnowmoquisuqomhfsvza.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_FBMRbDCZw-kZuhuHjDwtQQ_ajLWMtf6';
@@ -56,6 +56,14 @@ export default function DashboardPage() {
     } catch { toast.error('删除失败'); }
   }
 
+  async function handlePublish(id: string) {
+    try {
+      const res = await fetch('/api/images/share', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageId: id }) });
+      if (res.ok) toast.success('已公开到社区广场！');
+      else toast.error('发布失败');
+    } catch { toast.error('发布失败'); }
+  }
+
   function handleReusePrompt(prompt: string) { router.push(`/generate?prompt=${encodeURIComponent(prompt)}`); }
 
   async function handleFavorite(id: string, fav: boolean) {
@@ -96,14 +104,16 @@ export default function DashboardPage() {
             <div key={image.id} className="group rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 transition-all">
               <div className="aspect-square relative overflow-hidden">
                 <img src={image.result_urls?.[0]} alt={image.prompt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <button className="absolute top-2 right-2 p-1.5 rounded-lg bg-zinc-900/80" onClick={(e) => { e.stopPropagation(); handleFavorite(image.id, image.favorite); }}>
+                <button className="absolute top-2 right-2 p-1.5 rounded-lg bg-zinc-900/80 z-10" onClick={(e) => { e.stopPropagation(); handleFavorite(image.id, image.favorite); }}>
                   <Star size={14} className={image.favorite ? 'fill-yellow-400 text-yellow-400' : 'text-zinc-500'} />
                 </button>
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 p-2">
                   <div className="flex items-center gap-1.5">
                     <Link href={`/edit/${image.id}`} className="p-1.5 rounded-lg bg-violet-600/80 text-white hover:bg-violet-500 transition-colors" onClick={(e) => e.stopPropagation()}><Pen size={14} /></Link>
                     <Link href={`/crop/${image.id}`} className="p-1.5 rounded-lg bg-zinc-800/90 text-zinc-300 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Crop size={14} /></Link>
+                    <Link href={`/expand/${image.id}`} className="p-1.5 rounded-lg bg-zinc-800/90 text-zinc-300 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Expand size={14} /></Link>
                     <a href={image.result_urls?.[0]} download target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-zinc-800/90 text-zinc-300 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Download size={14} /></a>
+                    <button className="p-1.5 rounded-lg bg-zinc-800/90 text-zinc-300 hover:text-emerald-400 transition-colors" onClick={(e) => { e.stopPropagation(); handlePublish(image.id); }} title="公开到社区"><Globe size={14} /></button>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <button className="px-2 py-1 rounded-md bg-zinc-800/90 text-[10px] text-zinc-300 hover:text-violet-300 transition-colors" onClick={(e) => { e.stopPropagation(); handleReusePrompt(image.prompt); }}><Copy size={10} className="inline mr-1" />复用 Prompt</button>

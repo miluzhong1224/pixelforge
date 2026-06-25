@@ -49,7 +49,7 @@ export async function qwenImageToImage(options: GenerateOptions & { imageUrl: st
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'Qwen/Qwen-Image-Edit',
+      model: 'Qwen/Qwen-Image-Edit-2509',
       prompt: options.prompt,
       negative_prompt: options.negativePrompt || undefined,
       image: imageB64,
