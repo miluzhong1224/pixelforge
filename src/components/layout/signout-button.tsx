@@ -10,7 +10,7 @@ export function SignOutButton() {
         // 强制整页刷新到登录页，彻底清除所有 cookie/state
         window.location.href = '/login';
       }}
-      className="px-3 py-1.5 rounded-lg text-sm text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-colors"
+      className="px-3 py-1.5 rounded-lg text-sm text-[#666666] hover:text-[#0d0d0d]/80 hover:bg-[#f5f5f5] transition-colors"
     >
       退出登录
     </button>

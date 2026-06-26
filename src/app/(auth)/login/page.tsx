@@ -44,10 +44,10 @@ function LoginForm() {
     <Card padding="lg">
       <CardHeader>
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 w-10 rounded-xl bg-violet-600 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-xl bg-[#0066ff] flex items-center justify-center">
             <span className="text-white font-bold text-lg">P</span>
           </div>
-          <span className="text-xl font-bold text-zinc-100">PixelForge</span>
+          <span className="text-xl font-bold text-[#0d0d0d]">PixelForge</span>
         </div>
         <CardTitle>欢迎回来</CardTitle>
         <CardDescription>登录后继续创作</CardDescription>
@@ -62,8 +62,8 @@ function LoginForm() {
         <Button type="submit" className="w-full" size="lg" loading={loading}>登录</Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-500">
-        还没有账号？{' '}<Link href="/register" className="text-violet-400 hover:text-violet-300">立即注册</Link>
+      <p className="mt-6 text-center text-sm text-[#666666]">
+        还没有账号？{' '}<Link href="/register" className="text-[#0066ff] hover:text-[#0066ff]">立即注册</Link>
       </p>
     </Card>
   );
@@ -71,7 +71,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="text-zinc-500 text-center">加载中...</div>}>
+    <Suspense fallback={<div className="text-[#666666] text-center">加载中...</div>}>
       <LoginForm />
     </Suspense>
   );

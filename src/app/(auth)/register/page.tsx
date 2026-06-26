@@ -62,10 +62,10 @@ export default function RegisterPage() {
     <Card padding="lg">
       <CardHeader>
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 w-10 rounded-xl bg-violet-600 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-xl bg-[#0066ff] flex items-center justify-center">
             <span className="text-white font-bold text-lg">P</span>
           </div>
-          <span className="text-xl font-bold text-zinc-100">PixelForge</span>
+          <span className="text-xl font-bold text-[#0d0d0d]">PixelForge</span>
         </div>
         <CardTitle>创建账号</CardTitle>
         <CardDescription>开启你的 AI 设计之旅</CardDescription>
@@ -110,9 +110,9 @@ export default function RegisterPage() {
 </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-500">
+      <p className="mt-6 text-center text-sm text-[#666666]">
         已有账号？{' '}
-        <Link href="/login" className="text-violet-400 hover:text-violet-300">
+        <Link href="/login" className="text-[#0066ff] hover:text-[#0066ff]">
           立即登录
         </Link>
       </p>

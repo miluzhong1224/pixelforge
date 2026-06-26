@@ -11,9 +11,10 @@ export function Toaster() {
       position="top-right"
       toastOptions={{
         style: {
-          background: '#1a1a2e',
-          color: '#f0f0f5',
-          border: '1px solid #27272a',
+          background: '#ffffff',
+          color: '#0d0d0d',
+          border: '1px solid #e5e5e5',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
         },
       }}
     />

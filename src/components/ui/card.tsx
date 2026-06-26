@@ -12,9 +12,9 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-xl border border-zinc-800 bg-zinc-900/80 backdrop-blur-sm',
+          'rounded-xl border border-[#e5e5e5] bg-white/90 backdrop-blur-sm',
           'transition-all duration-300',
-          hover && 'hover:border-zinc-700 hover:bg-zinc-900 hover:shadow-lg hover:shadow-violet-600/5',
+          hover && 'hover:border-[#e5e5e5] hover:bg-white hover:shadow-lg hover:shadow-violet-600/5',
           {
             'p-0': padding === 'none',
             'p-3': padding === 'sm',
@@ -42,13 +42,13 @@ function CardHeader({ className, ...props }: CardHeaderProps) {
 interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
 
 function CardTitle({ className, ...props }: CardTitleProps) {
-  return <h3 className={cn('text-lg font-semibold text-zinc-100', className)} {...props} />;
+  return <h3 className={cn('text-lg font-semibold text-[#0d0d0d]', className)} {...props} />;
 }
 
 interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
 
 function CardDescription({ className, ...props }: CardDescriptionProps) {
-  return <p className={cn('text-sm text-zinc-400', className)} {...props} />;
+  return <p className={cn('text-sm text-[#666666]', className)} {...props} />;
 }
 
 export { Card, CardHeader, CardTitle, CardDescription };

@@ -42,28 +42,28 @@ export function CommentModal({ imageId, open, onClose }: { imageId: string; open
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70" />
-      <div className="relative w-full max-w-lg max-h-[80vh] bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden mx-4" onClick={e => e.stopPropagation()}>
-        <div className="p-4 border-b border-zinc-800 flex items-center justify-between shrink-0">
-          <h3 className="font-semibold text-zinc-100">评论 ({comments.length})</h3>
-          <button onClick={onClose} className="p-1 rounded-lg text-zinc-500 hover:text-zinc-300"><X size={18} /></button>
+      <div className="relative w-full max-w-lg max-h-[80vh] bg-white border border-[#e5e5e5] rounded-2xl shadow-2xl flex flex-col overflow-hidden mx-4" onClick={e => e.stopPropagation()}>
+        <div className="p-4 border-b border-[#e5e5e5] flex items-center justify-between shrink-0">
+          <h3 className="font-semibold text-[#0d0d0d]">评论 ({comments.length})</h3>
+          <button onClick={onClose} className="p-1 rounded-lg text-[#666666] hover:text-[#0d0d0d]/80"><X size={18} /></button>
         </div>
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {comments.length === 0 && <p className="text-sm text-zinc-500 text-center py-8">暂无评论，来说两句</p>}
+          {comments.length === 0 && <p className="text-sm text-[#666666] text-center py-8">暂无评论，来说两句</p>}
           {comments.map(c => (
-            <div key={c.id} className="p-3 rounded-xl bg-zinc-800/50">
+            <div key={c.id} className="p-3 rounded-xl bg-[#f5f5f5]">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-zinc-300">{c.name}</span>
-                <span className="text-[10px] text-zinc-600">{c.time}</span>
+                <span className="text-xs font-medium text-[#0d0d0d]/80">{c.name}</span>
+                <span className="text-[10px] text-[#666666]/60">{c.time}</span>
               </div>
-              <p className="text-sm text-zinc-400">{c.text}</p>
+              <p className="text-sm text-[#666666]">{c.text}</p>
             </div>
           ))}
         </div>
-        <div className="p-3 border-t border-zinc-800 shrink-0">
-          <p className="text-[10px] text-zinc-600 mb-1.5">评论身份：{nick}</p>
+        <div className="p-3 border-t border-[#e5e5e5] shrink-0">
+          <p className="text-[10px] text-[#666666]/60 mb-1.5">评论身份：{nick}</p>
           <div className="flex gap-2">
-            <input value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="写下你的评论..." className="flex-1 h-9 rounded-lg bg-zinc-800 px-3 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-violet-500" />
-            <button onClick={send} disabled={!text.trim()} className="h-9 w-9 rounded-lg bg-violet-600 text-white flex items-center justify-center hover:bg-violet-500 disabled:opacity-40 transition-colors"><Send size={15} /></button>
+            <input value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="写下你的评论..." className="flex-1 h-9 rounded-lg bg-[#f5f5f5] px-3 text-sm text-[#0d0d0d] placeholder:text-[#666666]/60 focus:outline-none focus:ring-2 focus:ring-[#0066ff]" />
+            <button onClick={send} disabled={!text.trim()} className="h-9 w-9 rounded-lg bg-[#0066ff] text-white flex items-center justify-center hover:bg-[#0052cc] disabled:opacity-40 transition-colors"><Send size={15} /></button>
           </div>
         </div>
       </div>

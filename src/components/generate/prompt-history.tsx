@@ -28,17 +28,17 @@ export function PromptHistory({ onSelect, open, onClose }: { onSelect: (p: strin
   if (!open || items.length === 0) return null;
 
   return (
-    <div className="absolute top-full left-0 right-0 mt-1 z-20 bg-zinc-800 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-700/50">
-        <span className="text-[11px] text-zinc-500 flex items-center gap-1"><Clock size={12} />最近使用</span>
-        <button onClick={() => { localStorage.removeItem(STORAGE_KEY); setItems([]); onClose(); }} className="text-[10px] text-zinc-600 hover:text-zinc-400">清空</button>
+    <div className="absolute top-full left-0 right-0 mt-1 z-20 bg-[#f5f5f5] border border-[#e5e5e5] rounded-xl shadow-2xl overflow-hidden">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-[#e5e5e5]/50">
+        <span className="text-[11px] text-[#666666] flex items-center gap-1"><Clock size={12} />最近使用</span>
+        <button onClick={() => { localStorage.removeItem(STORAGE_KEY); setItems([]); onClose(); }} className="text-[10px] text-[#666666]/60 hover:text-[#666666]">清空</button>
       </div>
       <div className="max-h-48 overflow-y-auto">
         {items.map((p, i) => (
           <button key={i} onClick={() => { onSelect(p); onClose(); }}
-            className="w-full text-left px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700/50 transition-colors border-b border-zinc-700/30 last:border-0 flex items-start gap-2"
+            className="w-full text-left px-3 py-2 text-sm text-[#0d0d0d]/80 hover:border-[#e5e5e5] transition-colors border-b border-[#e5e5e5]/30 last:border-0 flex items-start gap-2"
           >
-            <span className="text-zinc-600 text-[10px] mt-0.5 shrink-0">{i + 1}</span>
+            <span className="text-[#666666]/60 text-[10px] mt-0.5 shrink-0">{i + 1}</span>
             <span className="line-clamp-2">{p}</span>
           </button>
         ))}

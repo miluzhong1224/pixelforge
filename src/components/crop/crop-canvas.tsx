@@ -138,7 +138,7 @@ export function CropCanvas({ imageUrl, onCrop }: Props) {
     onCrop(c.toDataURL('image/jpeg', 0.85));
   };
 
-  if (!img) return <div className="aspect-square rounded-xl bg-zinc-800/50 animate-pulse" />;
+  if (!img) return <div className="aspect-square rounded-xl bg-[#f5f5f5] animate-pulse" />;
 
   return (
     <div className="space-y-4">
@@ -147,19 +147,19 @@ export function CropCanvas({ imageUrl, onCrop }: Props) {
         {RATIOS.map((r) => (
           <button key={r.label} onClick={() => setRatio(r.value)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              ratio === r.value ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30' : 'text-zinc-500 border border-transparent hover:text-zinc-300 hover:bg-zinc-800/50'
+              ratio === r.value ? 'bg-[#0066ff]/20 text-[#0066ff] border border-[#0066ff]/30' : 'text-[#666666] border border-transparent hover:text-[#0d0d0d]/80 hover:bg-[#f5f5f5]'
             }`}>{r.label}</button>
         ))}
       </div>
 
       {/* Canvas */}
       <canvas ref={canvasRef} width={600} height={600}
-        className="w-full max-w-[600px] rounded-xl border border-zinc-700/50 cursor-crosshair"
+        className="w-full max-w-[600px] rounded-xl border border-[#e5e5e5]/50 cursor-crosshair"
         onMouseDown={handleDown} onMouseMove={handleMove} onMouseUp={handleUp} onMouseLeave={handleUp}
       />
 
       <button onClick={doCrop}
-        className="inline-flex items-center h-10 px-5 rounded-lg bg-violet-600 text-white text-sm font-medium hover:bg-violet-500 transition-colors">
+        className="inline-flex items-center h-10 px-5 rounded-lg bg-[#0066ff] text-white text-sm font-medium hover:bg-[#0052cc] transition-colors">
         裁剪并保存
       </button>
     </div>
