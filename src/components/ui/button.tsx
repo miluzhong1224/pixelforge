@@ -13,22 +13,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         className={cn(
           'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0066ff] focus-visible:ring-offset-2',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b7fff] focus-visible:ring-offset-2',
           'disabled:opacity-50 disabled:pointer-events-none',
           {
             // Default (accent)
-            'bg-[#0066ff] text-white hover:bg-[#0052cc] shadow-lg shadow-[#0066ff]/20':
+            'bg-[#5b7fff] text-white hover:bg-[#4b6fd9] shadow-lg shadow-[#5b7fff]/20':
               variant === 'default',
             // Destructive
             'bg-red-600 text-white hover:bg-red-500': variant === 'destructive',
             // Outline
-            'border border-[#e5e5e5] bg-transparent text-[#0d0d0d]/80 hover:bg-[#f5f5f5] hover:border-[#cccccc]':
+            'border border-[#2a2d35] bg-transparent text-[#ececee]/80 hover:bg-[#15181d] hover:border-[#353945]':
               variant === 'outline',
             // Ghost
-            'bg-transparent text-[#666666] hover:text-[#0d0d0d] hover:bg-[#f5f5f5]':
+            'bg-transparent text-[#8b8b96] hover:text-[#ececee] hover:bg-[#15181d]':
               variant === 'ghost',
             // Link
-            'bg-transparent text-[#0066ff] hover:text-[#0066ff] underline-offset-4 hover:underline':
+            'bg-transparent text-[#5b7fff] hover:text-[#5b7fff] underline-offset-4 hover:underline':
               variant === 'link',
           },
           {

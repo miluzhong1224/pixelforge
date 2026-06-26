@@ -102,40 +102,40 @@ export default function ExpandPage({ params }: { params: Promise<{ imageId: stri
 
   const displayUrl = sourceUrl;
 
-  if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 rounded-full border-2 border-[#cccccc] border-t-[#0066ff] animate-spin" /></div>;
-  if (!sourceUrl) return <div className="text-center py-20"><h2 className="text-lg font-semibold text-[#0d0d0d]/80">未找到该图片</h2></div>;
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 rounded-full border-2 border-[#353945] border-t-[#5b7fff] animate-spin" /></div>;
+  if (!sourceUrl) return <div className="text-center py-20"><h2 className="text-lg font-semibold text-[#ececee]/80">未找到该图片</h2></div>;
 
   return (
     <div className="max-w-screen-2xl mx-auto px-6 py-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <button onClick={() => router.back()} className="p-2 rounded-lg text-[#666666] hover:text-[#0d0d0d]/80 hover:bg-[#f5f5f5]"><ArrowLeft size={20} /></button>
-          <div><h1 className="text-xl font-bold text-[#0d0d0d]">智能扩图</h1><p className="text-sm text-[#666666]">向外扩展图片，AI 自动填充边缘 · 支持多次扩图</p></div>
+          <button onClick={() => router.back()} className="p-2 rounded-lg text-[#8b8b96] hover:text-[#ececee]/80 hover:bg-[#15181d]"><ArrowLeft size={20} /></button>
+          <div><h1 className="text-xl font-bold text-[#ececee]">智能扩图</h1><p className="text-sm text-[#8b8b96]">向外扩展图片，AI 自动填充边缘 · 支持多次扩图</p></div>
         </div>
         <div className="flex items-center gap-2">
-          <a href={displayUrl!} download className="inline-flex items-center h-10 px-5 rounded-lg bg-[#0066ff] text-white text-sm font-medium hover:bg-[#0052cc]"><Download size={14} className="mr-1.5" />下载</a>
+          <a href={displayUrl!} download className="inline-flex items-center h-10 px-5 rounded-lg bg-[#5b7fff] text-white text-sm font-medium hover:bg-[#4b6fd9]"><Download size={14} className="mr-1.5" />下载</a>
         </div>
       </div>
 
       <div className="flex gap-6">
-        <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-xl border border-[#e5e5e5]/50 p-8">
-          <div className="text-center text-[10px] text-[#666666]/60 mb-2">紫色区域为 AI 扩展填充范围</div>
+        <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-xl border border-[#2a2d35]/50 p-8">
+          <div className="text-center text-[10px] text-[#8b8b96]/60 mb-2">紫色区域为 AI 扩展填充范围</div>
           <div className="relative inline-flex items-center justify-center" style={{ padding: `${expandRatio * 50}px` }}>
-            <div className="absolute inset-0 rounded-xl bg-[#0052cc]/10 border-2 border-dashed border-[#0066ff]/60" />
+            <div className="absolute inset-0 rounded-xl bg-[#4b6fd9]/10 border-2 border-dashed border-[#5b7fff]/60" />
             <img ref={imgRef} src={displayUrl!} alt="Expand" className="max-w-full max-h-[45vh] rounded-lg relative z-10 ring-2 ring-sand-dark" />
           </div>
-          <div className="text-center text-xs text-[#666666] mt-2">
+          <div className="text-center text-xs text-[#8b8b96] mt-2">
             {origWidth}×{origHeight} → 扩展后 ~{Math.round(origWidth * (1 + expandRatio))}×{Math.round(origHeight * (1 + expandRatio))}
           </div>
         </div>
 
         <div className="w-72 shrink-0 space-y-4">
-          <div className="p-4 rounded-xl bg-[#f5f5f5]/50 border border-[#e5e5e5]/50 space-y-3">
-            <label className="text-sm font-medium text-[#0d0d0d]/80">扩展比例</label>
+          <div className="p-4 rounded-xl bg-[#15181d]/50 border border-[#2a2d35]/50 space-y-3">
+            <label className="text-sm font-medium text-[#ececee]/80">扩展比例</label>
             <input type="range" min={0.05} max={0.5} step={0.05} value={expandRatio}
               onChange={e => setExpandRatio(Number(e.target.value))}
-              className="w-full h-2 rounded-full bg-[#f5f5f5] appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#0052cc]" />
-            <div className="flex justify-between text-xs text-[#666666]"><span>5%</span><span>{Math.round(expandRatio * 100)}%</span><span>50%</span></div>
+              className="w-full h-2 rounded-full bg-[#15181d] appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#4b6fd9]" />
+            <div className="flex justify-between text-xs text-[#8b8b96]"><span>5%</span><span>{Math.round(expandRatio * 100)}%</span><span>50%</span></div>
           </div>
           <Button onClick={handleExpand} className="w-full" size="lg" loading={generating}>
             <Expand size={16} className="mr-2" />{generating ? '扩展中...' : `向外扩展 ${Math.round(expandRatio * 100)}%`}

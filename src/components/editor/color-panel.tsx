@@ -54,7 +54,7 @@ export function ColorPanel({ imageUrl }: ColorPanelProps) {
   return (
     <div className="space-y-4">
       {/* Preview */}
-      <div className="rounded-xl overflow-hidden border border-[#e5e5e5]/50 bg-white">
+      <div className="rounded-xl overflow-hidden border border-[#2a2d35]/50 bg-white">
         <img src={imageUrl} alt="Adjust" className="w-full" style={{ filter: filters }} />
       </div>
 
@@ -63,22 +63,22 @@ export function ColorPanel({ imageUrl }: ColorPanelProps) {
         {sliders.map(s => (
           <div key={s.key} className="space-y-1">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-[#666666]">{s.label}</label>
-              <span className="text-xs text-[#666666]">{adj[s.key]}{s.unit}</span>
+              <label className="text-xs font-medium text-[#8b8b96]">{s.label}</label>
+              <span className="text-xs text-[#8b8b96]">{adj[s.key]}{s.unit}</span>
             </div>
             <input type="range" min={s.min} max={s.max} value={adj[s.key]}
               onChange={e => setAdj(p => ({ ...p, [s.key]: Number(e.target.value) }))}
-              className="w-full h-1.5 rounded-full bg-[#f5f5f5] appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#0052cc]" />
+              className="w-full h-1.5 rounded-full bg-[#15181d] appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#4b6fd9]" />
           </div>
         ))}
       </div>
 
       {/* Actions */}
       <div className="flex gap-2">
-        <button onClick={reset} className="flex items-center justify-center gap-1.5 flex-1 py-2 rounded-lg border border-[#e5e5e5] text-sm text-[#666666] hover:text-[#0d0d0d] hover:bg-[#f5f5f5] transition-colors">
+        <button onClick={reset} className="flex items-center justify-center gap-1.5 flex-1 py-2 rounded-lg border border-[#2a2d35] text-sm text-[#8b8b96] hover:text-[#ececee] hover:bg-[#15181d] transition-colors">
           <RotateCcw size={13} />重置
         </button>
-        <button onClick={handleDownload} className="flex items-center justify-center gap-1.5 flex-1 py-2 rounded-lg bg-[#0066ff] text-sm text-white font-medium hover:bg-[#0052cc] transition-colors">
+        <button onClick={handleDownload} className="flex items-center justify-center gap-1.5 flex-1 py-2 rounded-lg bg-[#5b7fff] text-sm text-white font-medium hover:bg-[#4b6fd9] transition-colors">
           <Download size={13} />导出
         </button>
       </div>

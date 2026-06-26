@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=1280"><title>PixelForge — 登录</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;background:#0d0d0d;color:#ececee;overflow:hidden;height:100vh}
+:root{
+  --panel:#1c1f24;--raised:#242830;--inset:#15181d;--hover:#2c3038;
+  --border-faint:#2a2d35;--border:#353945;
+  --text:#e0e0e4;--sub:#8b8b96;--muted:#5e5e66;
+  --signal:#5b7fff;--signal-hover:#7b9fff;
+}
+.page{display:flex;height:100vh}
+.brand{flex:1;display:flex;flex-direction:column;justify-content:center;padding:80px;position:relative}
+.brand::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.brand-content{position:relative;z-index:1}
+.brand-dot{width:12px;height:12px;border-radius:50%;background:var(--signal);margin-bottom:24px}
+.brand h2{font-size:48px;font-weight:700;line-height:1.15;margin-bottom:16px}
+.brand h2 .accent{color:var(--signal)}
+.brand p{font-size:15px;color:var(--sub);max-width:360px;line-height:1.6}
+.form-side{width:480px;background:var(--panel);display:flex;align-items:center;justify-content:center;padding:60px}
+.form-card{width:100%;max-width:360px}
+.form-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--sub);margin-bottom:6px}
+.form-input{
+  width:100%;height:40px;background:var(--inset);border:1px solid var(--border);
+  border-radius:4px;padding:0 14px;font-size:14px;color:var(--text);outline:none;
+  transition:border-color 0.12s;margin-bottom:16px;
+}
+.form-input:focus{border-color:var(--signal);box-shadow:0 0 0 3px rgba(91,127,255,0.12)}
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);transform:translateX(-100%)}
+.btn-primary:hover::after{transform:translateX(100%);transition:transform 0.4s ease}
+.btn-primary:active{transform:scale(0.97)}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(91,127,255,0.25)}
+.form-footer a{transition:color 0.15s ease,transform 0.15s ease;display:inline-block}
+.form-footer a:hover{transform:translateX(2px);text-decoration:underline}
+.brand-content{animation:fadeInLeft 0.6s ease-out}
+.form-card{animation:fadeInRight 0.6s ease-out 0.15s both}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.btn-primary{
+  width:100%;height:44px;background:var(--signal);color:white;
+  border:none;border-radius:22px;font-size:15px;font-weight:600;cursor:pointer;
+  transition:all 0.15s;margin-top:8px;
+}
+.btn-primary:hover{background:var(--signal-hover)}
+.btn-primary:active{transform:scale(0.98)}
+.form-footer{text-align:center;margin-top:24px;font-size:13px;color:var(--sub)}
+.form-footer a{color:var(--signal);text-decoration:none;margin-left:4px}
+.form-footer a:hover{text-decoration:underline}
+.form-title{font-size:22px;font-weight:700;margin-bottom:8px}
+.form-subtitle{font-size:14px;color:var(--sub);margin-bottom:32px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="brand">
+    <div class="brand-content">
+      <div class="brand-dot"></div>
+      <h2>FORGE<br>PIXELS.<br><span class="accent">WITH PRECISION.</span></h2>
+      <p>AI 驱动的专业图像创作工坊 — 为追求品质与掌控力的设计师打造</p>
+    </div>
+  </div>
+  <div class="form-side">
+    <div class="form-card">
+      <div class="form-title">登录你的工作站</div>
+      <div class="form-subtitle">欢迎回来</div>
+      <label class="form-label">邮箱</label>
+      <input class="form-input" placeholder="you@example.com" type="email">
+      <label class="form-label">密码</label>
+      <input class="form-input" placeholder="••••••••" type="password">
+      <button class="btn-primary">登录</button>
+      <div class="form-footer">还没有账号？<a href="#">立即注册</a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

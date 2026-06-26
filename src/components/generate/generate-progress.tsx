@@ -43,21 +43,21 @@ export function GenerateProgress({ loading, startTime, onRetry, error }: Generat
   if (!loading) return null;
 
   return (
-    <div className="space-y-2 p-3 rounded-xl bg-[#f5f5f5]/50 border border-[#e5e5e5]/50">
+    <div className="space-y-2 p-3 rounded-xl bg-[#15181d]/50 border border-[#2a2d35]/50">
       <div className="flex items-center gap-2">
-        <Loader2 size={14} className="animate-spin text-[#0066ff]" />
-        <span className="text-sm text-[#0d0d0d]/80">AI 正在创作中...</span>
-        <span className="text-xs text-[#666666]/60 ml-auto">{elapsed}s</span>
+        <Loader2 size={14} className="animate-spin text-[#5b7fff]" />
+        <span className="text-sm text-[#ececee]/80">AI 正在创作中...</span>
+        <span className="text-xs text-[#8b8b96]/60 ml-auto">{elapsed}s</span>
       </div>
       {/* Progress bar */}
-      <div className="h-1 rounded-full border-[#e5e5e5] overflow-hidden">
+      <div className="h-1 rounded-full border-[#2a2d35] overflow-hidden">
         <div
           className="h-full rounded-full bg-gradient-to-r from-violet-500 to-purple-500 animate-pulse transition-all duration-500"
           style={{ width: `${Math.min(elapsed * 3, 90)}%` }}
         />
       </div>
       {elapsed > 15 && (
-        <p className="text-[10px] text-[#666666]/60">生成时间较长，请耐心等待...</p>
+        <p className="text-[10px] text-[#8b8b96]/60">生成时间较长，请耐心等待...</p>
       )}
     </div>
   );

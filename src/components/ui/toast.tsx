@@ -2,7 +2,6 @@
 
 import { Toaster as Sonner, toast } from 'sonner';
 
-// Export toast and Toaster for app-wide use
 export { toast };
 
 export function Toaster() {
@@ -11,10 +10,10 @@ export function Toaster() {
       position="top-right"
       toastOptions={{
         style: {
-          background: '#ffffff',
-          color: '#0d0d0d',
-          border: '1px solid #e5e5e5',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+          background: '#242830',
+          color: '#e0e0e4',
+          border: '1px solid #2a2d35',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
         },
       }}
     />

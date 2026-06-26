@@ -90,18 +90,18 @@ export default function ExplorePage() {
 
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] flex items-center gap-2"><Sparkles size={22} className="text-[#0066ff]" />发现</h1>
-          <p className="text-sm text-[#666666] mt-1">社区作品 · 灵感广场</p>
+          <h1 className="text-2xl font-bold text-[#ececee] flex items-center gap-2"><Sparkles size={22} className="text-[#5b7fff]" />发现</h1>
+          <p className="text-sm text-[#8b8b96] mt-1">社区作品 · 灵感广场</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666666]" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8b8b96]" />
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="搜索作品..."
-              className="h-9 w-48 pl-9 pr-3 rounded-lg bg-[#f5f5f5] border border-[#e5e5e5] text-sm text-[#0d0d0d] placeholder:text-[#666666] focus:outline-none focus:ring-2 focus:ring-[#0066ff]" />
+              className="h-9 w-48 pl-9 pr-3 rounded-lg bg-[#15181d] border border-[#2a2d35] text-sm text-[#ececee] placeholder:text-[#8b8b96] focus:outline-none focus:ring-2 focus:ring-[#5b7fff]" />
           </div>
-          <div className="flex rounded-lg bg-[#f5f5f5] p-1">
+          <div className="flex rounded-lg bg-[#15181d] p-1">
             {[{ key: 'latest', label: '最新' }, { key: 'popular', label: '热门' }].map(({ key, label }) => (
-              <button key={key} onClick={() => setSort(key)} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${sort === key ? 'bg-[#f5f5f5] text-[#0d0d0d]' : 'text-[#666666] hover:text-[#0d0d0d]/80'}`}>{label}</button>
+              <button key={key} onClick={() => setSort(key)} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${sort === key ? 'bg-[#15181d] text-[#ececee]' : 'text-[#8b8b96] hover:text-[#ececee]/80'}`}>{label}</button>
             ))}
           </div>
         </div>
@@ -109,34 +109,34 @@ export default function ExplorePage() {
 
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, i) => (<div key={i} className="aspect-square rounded-xl bg-[#f5f5f5] animate-pulse" />))}
+          {Array.from({ length: 10 }).map((_, i) => (<div key={i} className="aspect-square rounded-xl bg-[#15181d] animate-pulse" />))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-[#666666]">{search ? '没有匹配的作品' : '暂无公开作品'}</p>
+          <p className="text-[#8b8b96]">{search ? '没有匹配的作品' : '暂无公开作品'}</p>
         </div>
       ) : (
         <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-4 space-y-4">
           {filtered.map((img) => (
-            <div key={img.id} className="break-inside-avoid rounded-xl overflow-hidden border border-[#e5e5e5] bg-white/50 hover:border-[#e5e5e5] transition-all group">
+            <div key={img.id} className="break-inside-avoid rounded-xl overflow-hidden border border-[#2a2d35] bg-white/50 hover:border-[#2a2d35] transition-all group">
               <div className="relative">
                 <img src={img.result_urls?.[0]} alt={img.prompt} className="w-full" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                  <p className="text-xs text-[#0d0d0d]/80 line-clamp-3 mb-2">{img.prompt}</p>
+                  <p className="text-xs text-[#ececee]/80 line-clamp-3 mb-2">{img.prompt}</p>
                   <div className="flex items-center justify-between">
-                    <Link href={`/user/${img.user_id}`} onClick={e => e.stopPropagation()} className="text-[11px] text-[#666666] hover:text-[#0066ff] transition-colors">{img.user_name}</Link>
+                    <Link href={`/user/${img.user_id}`} onClick={e => e.stopPropagation()} className="text-[11px] text-[#8b8b96] hover:text-[#5b7fff] transition-colors">{img.user_name}</Link>
                     <div className="flex items-center gap-1.5">
                       <button onClick={(e) => { e.stopPropagation(); setCommentImgId(img.id); }}
-                        className="p-1 rounded-md text-[11px] text-[#666666] hover:text-[#0d0d0d] transition-colors">
+                        className="p-1 rounded-md text-[11px] text-[#8b8b96] hover:text-[#ececee] transition-colors">
                         <MessageCircle size={13} />
                       </button>
                       <button onClick={(e) => { e.stopPropagation(); handleLike(img.id); }}
                         className="flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[11px] transition-colors hover:bg-white/10">
-                        <Heart size={13} className={likedMap[img.id] ? 'fill-red-400 text-red-400' : 'text-[#666666]'} />
-                        <span className="text-[#666666]">{img.like_count || 0}</span>
+                        <Heart size={13} className={likedMap[img.id] ? 'fill-red-400 text-red-400' : 'text-[#8b8b96]'} />
+                        <span className="text-[#8b8b96]">{img.like_count || 0}</span>
                       </button>
                       <button onClick={(e) => { e.stopPropagation(); router.push(`/generate?prompt=${encodeURIComponent(img.prompt)}`); toast.success('Prompt 已填入生成页'); }}
-                        className="flex items-center gap-1 px-2 py-1 rounded-md bg-[#0066ff]/80 text-white text-[11px] hover:bg-[#0052cc] transition-colors">
+                        className="flex items-center gap-1 px-2 py-1 rounded-md bg-[#5b7fff]/80 text-white text-[11px] hover:bg-[#4b6fd9] transition-colors">
                         <Copy size={10} />复用
                       </button>
                     </div>

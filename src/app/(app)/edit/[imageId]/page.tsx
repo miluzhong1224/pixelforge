@@ -232,7 +232,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
     return (
       <div className="max-w-screen-2xl mx-auto px-6 py-6">
         <div className="flex items-center justify-center h-64">
-          <div className="w-8 h-8 rounded-full border-2 border-[#cccccc] border-t-[#0066ff] animate-spin" />
+          <div className="w-8 h-8 rounded-full border-2 border-[#353945] border-t-[#5b7fff] animate-spin" />
         </div>
       </div>
     );
@@ -242,7 +242,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
     return (
       <div className="max-w-screen-2xl mx-auto px-6 py-6">
         <div className="text-center py-20">
-          <h2 className="text-lg font-semibold text-[#0d0d0d]/80">未找到该图片</h2>
+          <h2 className="text-lg font-semibold text-[#ececee]/80">未找到该图片</h2>
         </div>
       </div>
     );
@@ -255,18 +255,18 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 rounded-lg text-[#666666] hover:text-[#0d0d0d]/80 hover:bg-[#f5f5f5] transition-colors"
+            className="p-2 rounded-lg text-[#8b8b96] hover:text-[#ececee]/80 hover:bg-[#15181d] transition-colors"
           >
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-[#0d0d0d]">局部重绘编辑器</h1>
-            <p className="text-sm text-[#666666]">涂抹需要修改的区域，输入修改描述</p>
+            <h1 className="text-xl font-bold text-[#ececee]">局部重绘编辑器</h1>
+            <p className="text-sm text-[#8b8b96]">涂抹需要修改的区域，输入修改描述</p>
             {processing && (
               <div className="flex items-center gap-2 mt-1.5">
-                <div className="w-3 h-3 rounded-full border-2 border-[#cccccc] border-t-[#0066ff] animate-spin" />
-                <span className="text-xs text-[#0066ff]">{processingLabel}</span>
-                <span className="text-[10px] text-[#666666]/60">{elapsed}s</span>
+                <div className="w-3 h-3 rounded-full border-2 border-[#353945] border-t-[#5b7fff] animate-spin" />
+                <span className="text-xs text-[#5b7fff]">{processingLabel}</span>
+                <span className="text-[10px] text-[#8b8b96]/60">{elapsed}s</span>
               </div>
             )}
           </div>
@@ -278,7 +278,7 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
           <Button variant="outline" size="sm" onClick={handleUpscale} disabled={processing} loading={processing && processingLabel.includes('放大')}>
             <ZoomIn size={14} className="mr-1.5" /> 2x 放大
           </Button>
-          <Link href={`/expand/${imageId}`} className="inline-flex items-center h-9 px-3 rounded-lg border border-[#e5e5e5] text-sm text-[#666666] hover:text-[#0d0d0d] hover:bg-[#f5f5f5] transition-colors">
+          <Link href={`/expand/${imageId}`} className="inline-flex items-center h-9 px-3 rounded-lg border border-[#2a2d35] text-sm text-[#8b8b96] hover:text-[#ececee] hover:bg-[#15181d] transition-colors">
             <Expand size={14} className="mr-1.5" />扩图
           </Link>
           {editResult && <FormatDownload url={editResult} />}
@@ -300,20 +300,20 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
         {/* Right: Controls */}
         <div className="w-80 shrink-0 flex flex-col gap-4">
           {/* Mode tabs */}
-          <div className="flex rounded-lg bg-[#f5f5f5] p-1">
-            <button onClick={() => setToolMode('inpaint')} className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${toolMode === 'inpaint' ? 'bg-[#f5f5f5] text-[#0d0d0d]' : 'text-[#666666] hover:text-[#0d0d0d]/80'}`}>🖌️ 局部重绘</button>
-            <button onClick={() => setToolMode('color')} className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${toolMode === 'color' ? 'bg-[#f5f5f5] text-[#0d0d0d]' : 'text-[#666666] hover:text-[#0d0d0d]/80'}`}>🎨 调色</button>
+          <div className="flex rounded-lg bg-[#15181d] p-1">
+            <button onClick={() => setToolMode('inpaint')} className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${toolMode === 'inpaint' ? 'bg-[#15181d] text-[#ececee]' : 'text-[#8b8b96] hover:text-[#ececee]/80'}`}>🖌️ 局部重绘</button>
+            <button onClick={() => setToolMode('color')} className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${toolMode === 'color' ? 'bg-[#15181d] text-[#ececee]' : 'text-[#8b8b96] hover:text-[#ececee]/80'}`}>🎨 调色</button>
           </div>
 
           {toolMode === 'inpaint' ? (
             <>
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-[#666666] uppercase tracking-wider">修改提示词</label>
+              <label className="text-xs font-medium text-[#8b8b96] uppercase tracking-wider">修改提示词</label>
               <button
                 onClick={handleTranslate}
                 disabled={translating || !editPrompt.trim()}
-                className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-[#0066ff] hover:text-[#0066ff] hover:bg-[#0052cc]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-[#5b7fff] hover:text-[#5b7fff] hover:bg-[#4b6fd9]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Languages size={12} />
                 {translating ? '优化中...' : 'AI 优化翻译'}
@@ -324,16 +324,16 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
               onChange={(e) => setEditPrompt(e.target.value)}
               placeholder="描述遮罩区域应该出现的内容..."
               rows={3}
-              className="w-full resize-none rounded-lg border border-[#e5e5e5] bg-[#f5f5f5] px-3 py-2.5 text-sm text-[#0d0d0d] placeholder:text-[#666666] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0066ff] focus-visible:border-[#0066ff] transition-colors"
+              className="w-full resize-none rounded-lg border border-[#2a2d35] bg-[#15181d] px-3 py-2.5 text-sm text-[#ececee] placeholder:text-[#8b8b96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b7fff] focus-visible:border-[#5b7fff] transition-colors"
             />
           </div>
 
           {maskDataUrl && (
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#666666] uppercase tracking-wider">
+              <label className="text-xs font-medium text-[#8b8b96] uppercase tracking-wider">
                 遮罩预览
               </label>
-              <div className="rounded-lg overflow-hidden border border-[#e5e5e5]/50">
+              <div className="rounded-lg overflow-hidden border border-[#2a2d35]/50">
                 <img src={maskDataUrl} alt="Mask" className="w-full" />
               </div>
             </div>
@@ -350,9 +350,9 @@ export default function EditPage({ params }: { params: Promise<{ imageId: string
             {generating ? '处理中...' : '开始修改'}
           </Button>
 
-          <div className="p-4 rounded-xl bg-[#f5f5f5]/50 border border-[#e5e5e5]/50">
-            <h4 className="text-sm font-medium text-[#0d0d0d]/80 mb-2">使用技巧</h4>
-            <ul className="text-xs text-[#666666] space-y-1.5">
+          <div className="p-4 rounded-xl bg-[#15181d]/50 border border-[#2a2d35]/50">
+            <h4 className="text-sm font-medium text-[#ececee]/80 mb-2">使用技巧</h4>
+            <ul className="text-xs text-[#8b8b96] space-y-1.5">
               <li>• 用红色涂抹想要修改的区域</li>
               <li>• 使用"擦除"模式修正涂抹错误</li>
               <li>• 修改描述越具体，效果越好</li>

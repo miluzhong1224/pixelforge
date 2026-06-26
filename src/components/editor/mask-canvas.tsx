@@ -142,29 +142,29 @@ export function MaskCanvas({ imageUrl, onMaskChange, brushSize = 30 }: MaskCanva
     <div className="space-y-3">
       {/* Controls */}
       <div className="flex items-center gap-3">
-        <div className="flex rounded-lg bg-[#f5f5f5] p-1">
+        <div className="flex rounded-lg bg-[#15181d] p-1">
           <button
             onClick={() => setMode('draw')}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === 'draw' ? 'bg-red-600/20 text-red-400' : 'text-[#666666] hover:text-[#0d0d0d]/80'
+              mode === 'draw' ? 'bg-red-600/20 text-red-400' : 'text-[#8b8b96] hover:text-[#ececee]/80'
             }`}
           >
             🖌️ 涂抹</button>
           <button
             onClick={() => setMode('erase')}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === 'erase' ? 'bg-zinc-600 text-[#0d0d0d]' : 'text-[#666666] hover:text-[#0d0d0d]/80'
+              mode === 'erase' ? 'bg-zinc-600 text-[#ececee]' : 'text-[#8b8b96] hover:text-[#ececee]/80'
             }`}
           >
             🧹 擦除</button>
         </div>
-        <span className="text-xs text-[#666666]/60">
+        <span className="text-xs text-[#8b8b96]/60">
           画笔: {brushSize}px — 涂抹红色覆盖需要修改的区域
         </span>
       </div>
 
       {/* Canvas */}
-      <div className="relative rounded-xl overflow-hidden border border-[#e5e5e5]/50 bg-white inline-block">
+      <div className="relative rounded-xl overflow-hidden border border-[#2a2d35]/50 bg-white inline-block">
         <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
         <canvas
           ref={maskCanvasRef}

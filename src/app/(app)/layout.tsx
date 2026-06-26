@@ -8,36 +8,36 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Bar */}
-      <header className="border-b border-[#e5e5e5] bg-[#fafafa]/90 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-[#2a2d35] bg-[#13161a]/90 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-screen-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-lg bg-[#0066ff] flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-[#5b7fff] flex items-center justify-center">
                 <span className="text-white font-bold text-sm">P</span>
               </div>
-              <span className="font-semibold text-[#0d0d0d] hidden sm:block">PixelForge</span>
+              <span className="font-semibold text-[#ececee] hidden sm:block">PixelForge</span>
             </Link>
             <nav className="flex items-center gap-1">
               <Link
                 href="/generate"
-                className="px-3 py-1.5 rounded-lg text-sm text-[#666666] hover:text-[#0d0d0d] hover:bg-[#f5f5f5] transition-colors"
+                className="px-3 py-1.5 rounded-lg text-sm text-[#8b8b96] hover:text-[#ececee] hover:bg-[#15181d] transition-colors"
               >
                 创作</Link>
               <Link
                 href="/dashboard"
-                className="px-3 py-1.5 rounded-lg text-sm text-[#666666] hover:text-[#0d0d0d] hover:bg-[#f5f5f5] transition-colors"
+                className="px-3 py-1.5 rounded-lg text-sm text-[#8b8b96] hover:text-[#ececee] hover:bg-[#15181d] transition-colors"
               >
                 我的</Link>
               <Link
                 href="/explore"
-                className="px-3 py-1.5 rounded-lg text-sm text-[#666666] hover:text-[#0d0d0d] hover:bg-[#f5f5f5] transition-colors"
+                className="px-3 py-1.5 rounded-lg text-sm text-[#8b8b96] hover:text-[#ececee] hover:bg-[#15181d] transition-colors"
               >
                 发现</Link>
             </nav>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-sm text-[#666666] hidden sm:block">
+            <span className="text-sm text-[#8b8b96] hidden sm:block">
               {session?.user?.email}
             </span>
             <SignOutButton />

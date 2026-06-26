@@ -16,10 +16,10 @@ export function ImageGrid({ images, selectedIndex, onSelect, loading }: ImageGri
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="aspect-square rounded-xl bg-[#f5f5f5] border border-[#e5e5e5]/50 animate-pulse"
+            className="aspect-square rounded-xl bg-[#15181d] border border-[#2a2d35]/50 animate-pulse"
           >
             <div className="flex items-center justify-center h-full">
-              <div className="w-8 h-8 rounded-full border-2 border-[#cccccc] border-t-[#0066ff] animate-spin" />
+              <div className="w-8 h-8 rounded-full border-2 border-[#353945] border-t-[#5b7fff] animate-spin" />
             </div>
           </div>
         ))}
@@ -33,9 +33,9 @@ export function ImageGrid({ images, selectedIndex, onSelect, loading }: ImageGri
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="aspect-square rounded-xl bg-[#f5f5f5]/50 border border-dashed border-[#e5e5e5]/50 flex items-center justify-center"
+            className="aspect-square rounded-xl bg-[#15181d]/50 border border-dashed border-[#2a2d35]/50 flex items-center justify-center"
           >
-            <span className="text-[#666666]/60 text-sm">空</span>
+            <span className="text-[#8b8b96]/60 text-sm">空</span>
           </div>
         ))}
       </div>
@@ -50,10 +50,10 @@ export function ImageGrid({ images, selectedIndex, onSelect, loading }: ImageGri
           onClick={() => onSelect(i)}
           className={cn(
             'aspect-square rounded-xl overflow-hidden border-2 transition-all duration-200',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0066ff]',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b7fff]',
             selectedIndex === i
-              ? 'border-[#0066ff] ring-2 ring-[#0066ff]/50'
-              : 'border-transparent hover:border-[#cccccc]'
+              ? 'border-[#5b7fff] ring-2 ring-[#5b7fff]/50'
+              : 'border-transparent hover:border-[#353945]'
           )}
         >
           <img

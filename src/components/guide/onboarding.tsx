@@ -43,47 +43,47 @@ export function Onboarding() {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/80" onClick={dismiss} />
 
-      <div className="relative w-full max-w-md mx-4 bg-white border border-[#e5e5e5] rounded-2xl shadow-2xl p-6">
+      <div className="relative w-full max-w-md mx-4 bg-white border border-[#2a2d35] rounded-2xl shadow-2xl p-6">
         {/* Close */}
-        <button onClick={dismiss} className="absolute top-4 right-4 p-1 rounded-lg text-[#666666] hover:text-[#0d0d0d]/80 hover:bg-[#f5f5f5] transition-colors">
+        <button onClick={dismiss} className="absolute top-4 right-4 p-1 rounded-lg text-[#8b8b96] hover:text-[#ececee]/80 hover:bg-[#15181d] transition-colors">
           <X size={18} />
         </button>
 
         {/* Step indicator */}
         <div className="flex items-center gap-1.5 mb-4">
           {STEPS.map((_, i) => (
-            <div key={i} className={`h-1.5 rounded-full flex-1 transition-colors ${i <= step ? 'bg-[#0052cc]' : 'bg-[#f5f5f5]'}`} />
+            <div key={i} className={`h-1.5 rounded-full flex-1 transition-colors ${i <= step ? 'bg-[#4b6fd9]' : 'bg-[#15181d]'}`} />
           ))}
         </div>
 
         {/* Content */}
         <div className="flex items-start gap-3 mb-5">
-          <div className="h-10 w-10 rounded-xl bg-[#0066ff]/20 flex items-center justify-center shrink-0">
-            <Sparkles size={20} className="text-[#0066ff]" />
+          <div className="h-10 w-10 rounded-xl bg-[#5b7fff]/20 flex items-center justify-center shrink-0">
+            <Sparkles size={20} className="text-[#5b7fff]" />
           </div>
           <div>
-            <h3 className="font-semibold text-[#0d0d0d] mb-1">{step + 1}. {s.title}</h3>
-            <p className="text-sm text-[#666666] leading-relaxed">{s.desc}</p>
+            <h3 className="font-semibold text-[#ececee] mb-1">{step + 1}. {s.title}</h3>
+            <p className="text-sm text-[#8b8b96] leading-relaxed">{s.desc}</p>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex items-center justify-between">
-          <button onClick={dismiss} className="text-xs text-[#666666] hover:text-[#0d0d0d]/80 transition-colors">
+          <button onClick={dismiss} className="text-xs text-[#8b8b96] hover:text-[#ececee]/80 transition-colors">
             跳过引导
           </button>
           <div className="flex items-center gap-2">
             {step > 0 && (
-              <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm text-[#666666] hover:text-[#0d0d0d] hover:bg-[#f5f5f5] transition-colors">
+              <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm text-[#8b8b96] hover:text-[#ececee] hover:bg-[#15181d] transition-colors">
                 <ChevronLeft size={14} />上一步
               </button>
             )}
             {step < STEPS.length - 1 ? (
-              <button onClick={() => setStep(step + 1)} className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-[#0066ff] text-white text-sm font-medium hover:bg-[#0052cc] transition-colors">
+              <button onClick={() => setStep(step + 1)} className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-[#5b7fff] text-white text-sm font-medium hover:bg-[#4b6fd9] transition-colors">
                 下一步<ChevronRight size={14} />
               </button>
             ) : (
-              <button onClick={dismiss} className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-[#0066ff] text-white text-sm font-medium hover:bg-[#0052cc] transition-colors">
+              <button onClick={dismiss} className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-[#5b7fff] text-white text-sm font-medium hover:bg-[#4b6fd9] transition-colors">
                 开始创作 ✨
               </button>
             )}
