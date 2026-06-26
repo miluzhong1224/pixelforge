@@ -14,7 +14,7 @@ const SB_HEADERS = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE
 
 interface ImageItem {
   id: string; prompt: string; type: string; result_urls: string[];
-  width: number; height: number; favorite: boolean; createdAt: string;
+  width: number; height: number; favorite: boolean; share_slug?: string | null; createdAt: string;
 }
 
 export default function DashboardPage() {
@@ -23,12 +23,15 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [userId, setUserId] = useState<string | null>(null);
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
 
   const fetchImages = useCallback(async () => {
     if (!userId) return;
     try {
-      let url = `${SUPABASE_URL}/rest/v1/images?select=id,prompt,type,result_urls,width,height,favorite,createdAt&user_id=eq.${userId}&order=createdAt.desc&limit=50`;
-      if (filter !== 'all' && filter !== 'favorites') url += `&type=eq.${filter}`;
+      let url = `${SUPABASE_URL}/rest/v1/images?select=id,prompt,type,result_urls,width,height,favorite,createdAt,share_slug&user_id=eq.${userId}&order=createdAt.desc&limit=50`;
+      if (filter === 'published') url += '&share_slug=not.is.null';
+      else if (filter !== 'all' && filter !== 'favorites') url += `&type=eq.${filter}`;
       const res = await fetch(url, { headers: SB_HEADERS });
       if (res.ok) {
         let data = await res.json();
@@ -39,10 +42,14 @@ export default function DashboardPage() {
     finally { setLoading(false); }
   }, [userId, filter]);
 
-  // 获取 session userId
+  // 获取 session
   useEffect(() => {
     fetch('/api/auth/session').then(r => r.json()).then(d => {
-      if (d?.user?.id) setUserId(d.user.id);
+      if (d?.user) {
+        setUserId(d.user.id);
+        setUserName(d.user.name || '');
+        setUserEmail(d.user.email || '');
+      }
     }).catch(() => {});
   }, []);
 
@@ -76,15 +83,28 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-6 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <div><h1 className="text-2xl font-bold text-zinc-100">我的作品</h1><p className="text-sm text-zinc-500 mt-1">共 {images.length} 张作品</p></div>
+      {/* 个人信息卡片 */}
+      <div className="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800 mb-6 flex items-center gap-4">
+        <div className="h-14 w-14 rounded-full bg-violet-600 flex items-center justify-center text-white text-xl font-bold">
+          {(userName || userEmail)?.[0]?.toUpperCase() || '?'}
+        </div>
+        <div className="flex-1">
+          <h2 className="text-lg font-bold text-zinc-100">{userName || userEmail?.split('@')[0] || '用户'}</h2>
+          <p className="text-sm text-zinc-500">{userEmail} · {images.length} 张作品</p>
+        </div>
         <Link href="/generate"><Button size="sm"><Plus size={16} className="mr-1.5" />新建创作</Button></Link>
       </div>
-
-      <div className="flex items-center gap-2 mb-6">
-        {[{ key: 'all', label: '全部' }, { key: 'favorites', label: '⭐ 收藏' }, { key: 'text-to-image', label: '文生图' }, { key: 'image-to-image', label: '图生图' }, { key: 'inpaint', label: '局部重绘' }].map(({ key, label }) => (
+      <div className="flex items-center gap-2 mb-6 flex-wrap">
+        {[
+          { key: 'all', label: '全部作品' },
+          { key: 'text-to-image', label: '文生图' },
+          { key: 'image-to-image', label: '图生图' },
+          { key: 'inpaint', label: '局部重绘' },
+          { key: 'published', label: '🌐 已发布' },
+          { key: 'favorites', label: '⭐ 收藏' },
+        ].map(({ key, label }) => (
           <button key={key} onClick={() => { setFilter(key); setLoading(true); }}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${filter === key ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30' : 'text-zinc-500 border border-transparent hover:text-zinc-300 hover:bg-zinc-800/50'}`}>{label}</button>
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === key ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30' : 'text-zinc-500 border border-transparent hover:text-zinc-300 hover:bg-zinc-800/50'}`}>{label}</button>
         ))}
       </div>
 

@@ -27,7 +27,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
                 href="/dashboard"
                 className="px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition-colors"
               >
-                我的作品              </Link>
+                我的</Link>
               <Link
                 href="/explore"
                 className="px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition-colors"
