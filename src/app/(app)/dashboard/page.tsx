@@ -84,13 +84,13 @@ export default function DashboardPage() {
   return (
     <div className="max-w-screen-2xl mx-auto px-6 py-6">
       {/* 个人信息卡片 */}
-      <div className="p-5 rounded-2xl bg-white/50 border border-[#2a2d35] mb-6 flex items-center gap-4">
-        <div className="h-14 w-14 rounded-full bg-[#5b7fff] flex items-center justify-center text-white text-xl font-bold">
+      <div className="p-5 rounded-2xl bg-white/50 border border-[#e5e5e5] mb-6 flex items-center gap-4">
+        <div className="h-14 w-14 rounded-full bg-[#0066ff] flex items-center justify-center text-white text-xl font-bold">
           {(userName || userEmail)?.[0]?.toUpperCase() || '?'}
         </div>
         <div className="flex-1">
-          <h2 className="text-lg font-bold text-[#ececee]">{userName || userEmail?.split('@')[0] || '用户'}</h2>
-          <p className="text-sm text-[#8b8b96]">{userEmail} · {images.length} 张作品</p>
+          <h2 className="text-lg font-bold text-[#0d0d0d]">{userName || userEmail?.split('@')[0] || '用户'}</h2>
+          <p className="text-sm text-[#666666]">{userEmail} · {images.length} 张作品</p>
         </div>
         <Link href="/generate"><Button size="sm"><Plus size={16} className="mr-1.5" />新建创作</Button></Link>
       </div>
@@ -104,48 +104,48 @@ export default function DashboardPage() {
           { key: 'favorites', label: '⭐ 收藏' },
         ].map(({ key, label }) => (
           <button key={key} onClick={() => { setFilter(key); setLoading(true); }}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === key ? 'bg-[#5b7fff]/20 text-[#5b7fff] border border-[#5b7fff]/30' : 'text-[#8b8b96] border border-transparent hover:text-[#ececee]/80 hover:bg-[#15181d]'}`}>{label}</button>
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === key ? 'bg-[#0066ff]/20 text-[#0066ff] border border-[#0066ff]/30' : 'text-[#666666] border border-transparent hover:text-[#0d0d0d]/80 hover:bg-[#f5f5f5]'}`}>{label}</button>
         ))}
       </div>
 
       {loading || !userId ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, i) => (<div key={i} className="aspect-square rounded-xl bg-[#15181d] animate-pulse" />))}
+          {Array.from({ length: 10 }).map((_, i) => (<div key={i} className="aspect-square rounded-xl bg-[#f5f5f5] animate-pulse" />))}
         </div>
       ) : images.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-5xl mb-4">🎨</div>
-          <h2 className="text-lg font-semibold text-[#ececee]/80 mb-2">还没有作品</h2>
-          <p className="text-sm text-[#8b8b96] mb-6">开始用 AI 创作第一张图像吧</p>
+          <h2 className="text-lg font-semibold text-[#0d0d0d]/80 mb-2">还没有作品</h2>
+          <p className="text-sm text-[#666666] mb-6">开始用 AI 创作第一张图像吧</p>
           <Link href="/generate"><Button>开始创作</Button></Link>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {images.map((image) => (
-            <div key={image.id} className="group rounded-xl overflow-hidden border border-[#2a2d35] bg-white/50 hover:border-[#2a2d35] transition-all">
+            <div key={image.id} className="group rounded-xl overflow-hidden border border-[#e5e5e5] bg-white/50 hover:border-[#e5e5e5] transition-all">
               <div className="aspect-square relative overflow-hidden">
                 <img src={image.result_urls?.[0]} alt={image.prompt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <button className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/90 z-10" onClick={(e) => { e.stopPropagation(); handleFavorite(image.id, image.favorite); }}>
-                  <Star size={14} className={image.favorite ? 'fill-yellow-400 text-yellow-400' : 'text-[#8b8b96]'} />
+                  <Star size={14} className={image.favorite ? 'fill-yellow-400 text-yellow-400' : 'text-[#666666]'} />
                 </button>
-                <div className="absolute inset-0 bg-[#13161a]/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 p-2">
+                <div className="absolute inset-0 bg-[#fafafa]/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 p-2">
                   <div className="flex items-center gap-1.5">
-                    <Link href={`/edit/${image.id}`} className="p-1.5 rounded-lg bg-[#5b7fff]/80 text-white hover:bg-[#4b6fd9] transition-colors" onClick={(e) => e.stopPropagation()}><Pen size={14} /></Link>
-                    <Link href={`/crop/${image.id}`} className="p-1.5 rounded-lg bg-[#15181d]/90 text-[#ececee]/80 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Crop size={14} /></Link>
-                    <Link href={`/expand/${image.id}`} className="p-1.5 rounded-lg bg-[#15181d]/90 text-[#ececee]/80 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Expand size={14} /></Link>
-                    <a href={image.result_urls?.[0]} download target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-[#15181d]/90 text-[#ececee]/80 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Download size={14} /></a>
-                    <button className="p-1.5 rounded-lg bg-[#15181d]/90 text-[#ececee]/80 hover:text-emerald-400 transition-colors" onClick={(e) => { e.stopPropagation(); handlePublish(image.id); }} title="公开到社区"><Globe size={14} /></button>
+                    <Link href={`/edit/${image.id}`} className="p-1.5 rounded-lg bg-[#0066ff]/80 text-white hover:bg-[#0052cc] transition-colors" onClick={(e) => e.stopPropagation()}><Pen size={14} /></Link>
+                    <Link href={`/crop/${image.id}`} className="p-1.5 rounded-lg bg-[#f5f5f5]/90 text-[#0d0d0d]/80 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Crop size={14} /></Link>
+                    <Link href={`/expand/${image.id}`} className="p-1.5 rounded-lg bg-[#f5f5f5]/90 text-[#0d0d0d]/80 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Expand size={14} /></Link>
+                    <a href={image.result_urls?.[0]} download target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-[#f5f5f5]/90 text-[#0d0d0d]/80 hover:text-white transition-colors" onClick={(e) => e.stopPropagation()}><Download size={14} /></a>
+                    <button className="p-1.5 rounded-lg bg-[#f5f5f5]/90 text-[#0d0d0d]/80 hover:text-emerald-400 transition-colors" onClick={(e) => { e.stopPropagation(); handlePublish(image.id); }} title="公开到社区"><Globe size={14} /></button>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <button className="px-2 py-1 rounded-md bg-[#15181d]/90 text-[10px] text-[#ececee]/80 hover:text-[#5b7fff] transition-colors" onClick={(e) => { e.stopPropagation(); handleReusePrompt(image.prompt); }}><Copy size={10} className="inline mr-1" />复用 Prompt</button>
-                    <button className="p-1.5 rounded-lg bg-[#15181d]/90 text-[#ececee]/80 hover:text-red-400 transition-colors" onClick={(e) => { e.stopPropagation(); handleDelete(image.id); }}><Trash2 size={14} /></button>
+                    <button className="px-2 py-1 rounded-md bg-[#f5f5f5]/90 text-[10px] text-[#0d0d0d]/80 hover:text-[#0066ff] transition-colors" onClick={(e) => { e.stopPropagation(); handleReusePrompt(image.prompt); }}><Copy size={10} className="inline mr-1" />复用 Prompt</button>
+                    <button className="p-1.5 rounded-lg bg-[#f5f5f5]/90 text-[#0d0d0d]/80 hover:text-red-400 transition-colors" onClick={(e) => { e.stopPropagation(); handleDelete(image.id); }}><Trash2 size={14} /></button>
                   </div>
                 </div>
-                <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-white/90 text-[10px] text-[#8b8b96]">{image.type === 'text-to-image' ? '文生图' : image.type === 'image-to-image' ? '图生图' : '编辑'}</span>
+                <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-white/90 text-[10px] text-[#666666]">{image.type === 'text-to-image' ? '文生图' : image.type === 'image-to-image' ? '图生图' : '编辑'}</span>
               </div>
               <div className="p-3">
-                <p className="text-xs text-[#8b8b96] mb-1 line-clamp-2">{truncate(image.prompt, 80)}</p>
-                <p className="text-[10px] text-[#8b8b96]/60">{formatDate(image.createdAt)} · {image.width}×{image.height}</p>
+                <p className="text-xs text-[#666666] mb-1 line-clamp-2">{truncate(image.prompt, 80)}</p>
+                <p className="text-[10px] text-[#666666]/60">{formatDate(image.createdAt)} · {image.width}×{image.height}</p>
               </div>
             </div>
           ))}

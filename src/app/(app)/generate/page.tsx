@@ -238,7 +238,7 @@ export default function GeneratePage() {
         {/* Left: Parameters Panel */}
         <div className="w-80 shrink-0 flex flex-col gap-4 overflow-y-auto pr-2">
           {/* Mode tabs */}
-          <div className="flex rounded-lg bg-[#15181d] p-1">
+          <div className="flex rounded-lg bg-[#f5f5f5] p-1">
             {([
               { key: 'text-to-image' as const, label: '文生图', icon: Wand2 },
               { key: 'image-to-image' as const, label: '图生图', icon: Upload },
@@ -248,7 +248,7 @@ export default function GeneratePage() {
                 key={key}
                 onClick={() => { setMode(key); setResultUrls([]); setSelectedIndex(0); }}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-xs font-medium transition-all ${
-                  mode === key ? 'bg-[#15181d] text-[#ececee] shadow-sm' : 'text-[#8b8b96] hover:text-[#ececee]/80'
+                  mode === key ? 'bg-[#f5f5f5] text-[#0d0d0d] shadow-sm' : 'text-[#666666] hover:text-[#0d0d0d]/80'
                 }`}
               >
                 <Icon size={14} />{label}
@@ -258,24 +258,24 @@ export default function GeneratePage() {
 
           {/* Reverse mode */}
           {mode === 'reverse' && (
-            <div className="p-4 rounded-xl bg-[#4b6fd9]/5 border border-[#5b7fff]/20 space-y-3">
-              <div className="flex items-center gap-2 text-sm text-[#5b7fff]">
+            <div className="p-4 rounded-xl bg-[#0052cc]/5 border border-[#0066ff]/20 space-y-3">
+              <div className="flex items-center gap-2 text-sm text-[#0066ff]">
                 <ScanEye size={16} />
                 <span className="font-medium">风格变体生成</span>
               </div>
-              <p className="text-xs text-[#8b8b96]">
+              <p className="text-xs text-[#666666]">
                 上传一张图片，AI 生成同风格的不同变体。适合探索更多设计方案
               </p>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full aspect-video rounded-lg border-2 border-dashed border-[#2a2d35] bg-[#15181d]/50 hover:border-[#5b7fff]/50 hover:bg-[#15181d] transition-colors flex items-center justify-center overflow-hidden"
+                className="w-full aspect-video rounded-lg border-2 border-dashed border-[#e5e5e5] bg-[#f5f5f5]/50 hover:border-[#0066ff]/50 hover:bg-[#f5f5f5] transition-colors flex items-center justify-center overflow-hidden"
               >
                 {sourceImage ? (
                   <img src={sourceImage} alt="Source" className="w-full h-full object-cover" />
                 ) : (
                   <div className="text-center">
-                    <ImageUp size={28} className="mx-auto text-[#8b8b96]/60 mb-1" />
-                    <span className="text-xs text-[#8b8b96]">上传要分析的图片</span>
+                    <ImageUp size={28} className="mx-auto text-[#666666]/60 mb-1" />
+                    <span className="text-xs text-[#666666]">上传要分析的图片</span>
                   </div>
                 )}
               </button>
@@ -294,17 +294,17 @@ export default function GeneratePage() {
           {/* Source image upload */}
           {mode === 'image-to-image' && (
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#8b8b96] uppercase tracking-wider">参考图片</label>
+              <label className="text-xs font-medium text-[#666666] uppercase tracking-wider">参考图片</label>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full aspect-video rounded-lg border-2 border-dashed border-[#2a2d35] bg-[#15181d]/50 hover:border-[#5b7fff]/50 hover:bg-[#15181d] transition-colors flex items-center justify-center overflow-hidden"
+                className="w-full aspect-video rounded-lg border-2 border-dashed border-[#e5e5e5] bg-[#f5f5f5]/50 hover:border-[#0066ff]/50 hover:bg-[#f5f5f5] transition-colors flex items-center justify-center overflow-hidden"
               >
                 {sourceImage ? (
                   <img src={sourceImage} alt="Source" className="w-full h-full object-cover" />
                 ) : (
                   <div className="text-center">
-                    <Upload size={24} className="mx-auto text-[#8b8b96]/60 mb-1" />
-                    <span className="text-xs text-[#8b8b96]">上传图片</span>
+                    <Upload size={24} className="mx-auto text-[#666666]/60 mb-1" />
+                    <span className="text-xs text-[#666666]">上传图片</span>
                   </div>
                 )}
               </button>
@@ -317,19 +317,19 @@ export default function GeneratePage() {
           {/* Prompt + 操作按钮 */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-[#8b8b96] uppercase tracking-wider">提示词</label>
+              <label className="text-xs font-medium text-[#666666] uppercase tracking-wider">提示词</label>
               <div className="flex items-center gap-1">
                 <button
                   onClick={handleTranslate}
                   disabled={translating || !prompt.trim()}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-[#5b7fff] hover:text-[#5b7fff] hover:bg-[#4b6fd9]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-[#0066ff] hover:text-[#0066ff] hover:bg-[#0052cc]/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Languages size={12} />
                   {translating ? '优化中...' : 'AI 优化翻译'}
                 </button>
                 <button
                   onClick={() => setHistoryOpen(!historyOpen)}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-[#8b8b96] hover:text-[#ececee]/80 hover:border-[#2a2d35] transition-colors"
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] text-[#666666] hover:text-[#0d0d0d]/80 hover:border-[#e5e5e5] transition-colors"
                 >
                   <Clock size={12} />历史
                 </button>
@@ -340,13 +340,13 @@ export default function GeneratePage() {
               onChange={(e) => setPrompt(e.target.value)}
               placeholder={mode === 'text-to-image' ? '电影感的日落山景，金色光线，写实风格...' : '将这张图片转换为水彩画风格...'}
               rows={3}
-              className="w-full resize-none rounded-lg border border-[#2a2d35] bg-[#15181d] px-3 py-2.5 text-sm text-[#ececee] placeholder:text-[#8b8b96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b7fff] focus-visible:border-[#5b7fff] transition-colors"
+              className="w-full resize-none rounded-lg border border-[#e5e5e5] bg-[#f5f5f5] px-3 py-2.5 text-sm text-[#0d0d0d] placeholder:text-[#666666] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0066ff] focus-visible:border-[#0066ff] transition-colors"
             />
 
             {/* 模板按钮 — 独立一行，更醒目 */}
             <button
               onClick={() => setTemplateOpen(true)}
-              className="flex items-center justify-center gap-2 w-full py-2 rounded-lg border border-dashed border-[#353945] bg-[#15181d]/50 text-sm text-[#8b8b96] hover:border-[#5b7fff]/50 hover:text-[#5b7fff] hover:bg-[#4b6fd9]/5 transition-all"
+              className="flex items-center justify-center gap-2 w-full py-2 rounded-lg border border-dashed border-[#cccccc] bg-[#f5f5f5]/50 text-sm text-[#666666] hover:border-[#0066ff]/50 hover:text-[#0066ff] hover:bg-[#0052cc]/5 transition-all"
             >
               <BookOpen size={15} />
               浏览 Prompt 模板库（12 套风格预设）
@@ -369,7 +369,7 @@ export default function GeneratePage() {
 
           {/* Dimensions */}
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-[#8b8b96] uppercase tracking-wider">尺寸预设</label>
+            <label className="text-xs font-medium text-[#666666] uppercase tracking-wider">尺寸预设</label>
             <div className="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto pr-1">
               {DIMENSIONS.map((d, i) => (
                 <button
@@ -377,8 +377,8 @@ export default function GeneratePage() {
                   onClick={() => setDimensionIndex(i)}
                   className={`py-2 px-3 rounded-lg text-xs font-medium transition-all text-left ${
                     dimensionIndex === i
-                      ? 'bg-[#5b7fff]/20 text-[#5b7fff] border border-[#5b7fff]/50'
-                      : 'bg-[#15181d]/50 text-[#8b8b96] border border-transparent hover:border-[#2a2d35]'
+                      ? 'bg-[#0066ff]/20 text-[#0066ff] border border-[#0066ff]/50'
+                      : 'bg-[#f5f5f5]/50 text-[#666666] border border-transparent hover:border-[#e5e5e5]'
                   }`}
                 >
                   <div className="text-[11px]">{d.label}</div>
@@ -402,7 +402,7 @@ export default function GeneratePage() {
               <Button className="w-full" size="md" onClick={() => router.push(`/edit/${lastImageId}`)}>
                 <Pen size={16} className="mr-2" /> 二次编辑（局部重绘）
               </Button>
-              <p className="text-[10px] text-[#8b8b96]/60 text-center">收藏 / 下载 / 公开社区请在「我的作品」中操作</p>
+              <p className="text-[10px] text-[#666666]/60 text-center">收藏 / 下载 / 公开社区请在「我的作品」中操作</p>
             </div>
           )}
         </div>

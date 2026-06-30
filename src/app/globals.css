@@ -7,8 +7,8 @@
 }
 
 body {
-  background: #13161a;
-  color: #ececee;
+  background: #fafafa;
+  color: #0d0d0d;
   font-family: var(--font-sans, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -16,5 +16,5 @@ body {
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #2a2d35; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #353945; }
+::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #cccccc; }

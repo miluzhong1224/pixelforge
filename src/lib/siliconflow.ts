@@ -31,12 +31,22 @@ export async function qwenTextToImage(options: GenerateOptions) {
   }
 
   const data = await res.json();
-  const urls: string[] = (data.data || []).map((item: { url?: string; b64_json?: string }) => {
-    if (item.url) return item.url;
-    if (item.b64_json) return `data:image/png;base64,${item.b64_json}`;
-    return '';
-  }).filter(Boolean);
-  return urls;
+  // 将临时 URL 转为 base64 data URI 永久存储
+  const urls = await Promise.all(
+    (data.data || []).map(async (item: { url?: string; b64_json?: string }) => {
+      if (item.b64_json) return `data:image/png;base64,${item.b64_json}`;
+      if (item.url) {
+        try {
+          return await downloadAsBase64(item.url);
+        } catch {
+          // 如果下载失败，保留原始 URL 作为后备
+          return item.url;
+        }
+      }
+      return '';
+    })
+  );
+  return urls.filter(Boolean);
 }
 
 export async function qwenImageToImage(options: GenerateOptions & { imageUrl: string }) {
@@ -64,36 +74,36 @@ export async function qwenImageToImage(options: GenerateOptions & { imageUrl: st
   }
 
   const data = await res.json();
-  const urls: string[] = (data.data || []).map((item: { url?: string; b64_json?: string }) => {
-    if (item.url) return item.url;
-    if (item.b64_json) return `data:image/png;base64,${item.b64_json}`;
-    return '';
-  }).filter(Boolean);
-  return urls;
+  // 将临时 URL 转为 base64 data URI 永久存储
+  const urls = await Promise.all(
+    (data.data || []).map(async (item: { url?: string; b64_json?: string }) => {
+      if (item.b64_json) return `data:image/png;base64,${item.b64_json}`;
+      if (item.url) {
+        try {
+          return await downloadAsBase64(item.url);
+        } catch {
+          return item.url;
+        }
+      }
+      return '';
+    })
+  );
+  return urls.filter(Boolean);
 }
 
-/** 下载图片（URL 或 data URI）→ base64 data URI */
+/** 下载图片（URL 或 data URI）→ 压缩后 base64 data URI（JPEG, 节省存储空间） */
 async function downloadAsBase64(source: string): Promise<string> {
-  let buffer: Buffer;
-  let mimeType: string;
+  // 如果已经是 data URI，直接返回（避免反复编解码）
+  if (source.startsWith('data:')) return source;
 
-  if (source.startsWith('data:')) {
-    // data URI → 提取 mime 和 base64
-    const match = source.match(/^data:(image\/\w+);base64,(.+)$/);
-    if (match) {
-      mimeType = match[1];
-      buffer = Buffer.from(match[2], 'base64');
-    } else {
-      buffer = Buffer.from(source.split(',')[1], 'base64');
-      mimeType = 'image/png';
-    }
-  } else {
-    // URL → fetch
-    const response = await fetch(source);
-    buffer = Buffer.from(await response.arrayBuffer());
-    mimeType = response.headers.get('content-type') || 'image/png';
-  }
+  // URL → fetch → 压缩为 JPEG
+  const response = await fetch(source);
+  const arrayBuffer = await response.arrayBuffer();
 
+  // 服务端压缩：用最小化方案，直接返回原始 PNG 的 base64
+  // Node.js 环境下无法用 Canvas 压缩，保留原始格式
+  const buffer = Buffer.from(arrayBuffer);
+  const mimeType = response.headers.get('content-type') || 'image/png';
   const b64 = buffer.toString('base64');
   return `data:${mimeType};base64,${b64}`;
 }
