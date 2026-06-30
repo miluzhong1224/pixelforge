@@ -58,7 +58,7 @@ export default function UserPage({ params }: { params: Promise<{ id: string }> }
           {images.map((img) => (
             <div key={img.id} className="rounded-xl overflow-hidden border border-[#e5e5e5] bg-white/50 hover:border-[#e5e5e5] transition-all group">
               <div className="relative aspect-square">
-                <img src={img.result_urls?.[0]} alt={img.prompt} className="w-full h-full object-cover" loading="lazy" />
+                <img src={img.result_urls?.[0]} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-cover" loading="lazy" />
                 <div className="absolute inset-0 bg-[#fafafa]/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                   <button onClick={(e) => { e.stopPropagation(); router.push(`/generate?prompt=${encodeURIComponent(img.prompt)}`); toast.success('Prompt 已填入'); }}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#0066ff]/80 text-white text-xs hover:bg-[#0052cc]"><Copy size={12} />复用</button>

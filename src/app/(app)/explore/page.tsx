@@ -120,7 +120,10 @@ export default function ExplorePage() {
           {filtered.map((img) => (
             <div key={img.id} className="break-inside-avoid rounded-xl overflow-hidden border border-[#e5e5e5] bg-white/50 hover:border-[#e5e5e5] transition-all group">
               <div className="relative">
-                <img src={img.result_urls?.[0]} alt={img.prompt} className="w-full" loading="lazy" />
+                <img src={img.result_urls?.[0]} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full" loading="lazy" />
+                {(!img.result_urls?.[0] || !img.result_urls?.[0]?.startsWith('http')) && (
+                  <div className="flex items-center justify-center h-48 bg-[#f5f5f5] text-[#666666]/40 text-xs">图片已过期</div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
                   <p className="text-xs text-[#0d0d0d]/80 line-clamp-3 mb-2">{img.prompt}</p>
                   <div className="flex items-center justify-between">

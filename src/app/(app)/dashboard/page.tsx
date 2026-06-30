@@ -123,8 +123,12 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {images.map((image) => (
             <div key={image.id} className="group rounded-xl overflow-hidden border border-[#e5e5e5] bg-white/50 hover:border-[#e5e5e5] transition-all">
-              <div className="aspect-square relative overflow-hidden">
-                <img src={image.result_urls?.[0]} alt={image.prompt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              <div className="aspect-square relative overflow-hidden bg-[#f5f5f5]">
+                <img src={image.result_urls?.[0]} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                {(!image.result_urls?.[0] || !image.result_urls?.[0]?.startsWith('http')) && (
+                  <div className="absolute inset-0 flex items-center justify-center text-[#666666]/40 text-xs">图片已过期</div>
+                )}
                 <button className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/90 z-10" onClick={(e) => { e.stopPropagation(); handleFavorite(image.id, image.favorite); }}>
                   <Star size={14} className={image.favorite ? 'fill-yellow-400 text-yellow-400' : 'text-[#666666]'} />
                 </button>
